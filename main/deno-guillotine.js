@@ -1,6 +1,6 @@
 import { FileSystem } from "https://deno.land/x/quickr@0.3.44/main/file_system.js"
 
-const currentLatestVersion = "1.24.3"
+const currentLatestVersion = `${Deno.version.deno}`
 const path = Deno.args[0]
 const version = Deno.args[1] || currentLatestVersion
 const info = await FileSystem.info(path)
