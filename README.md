@@ -20,7 +20,7 @@ deno-guillotine ./example.js 1.24.3 # Deno version
 ```
 
 4. Profit<br>
-It will generate two files. One with no extension, and one with a `.ps1` extension. One file is a shortcut to the other. Typing `./example` will run the file with a specific version of deno, and if the user doesn't have deno it is automatically installed (without changing the user's PATH if they have another version of deno).
+It will generate two files. One with no extension, and one with a `.ps1` extension. One file is a shortcut to the other. Typing `./example` will run the file with a specific version of deno, and if the user doesn't have deno it is automatically installed (without changing the user's PATH if they have another version of deno). One file is just a shortcut to the other one, and technically `./example.ps1` will work on all platforms, but typing that is not as pretty.
 
 # How does it work?
 
