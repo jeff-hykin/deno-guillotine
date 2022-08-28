@@ -7,6 +7,24 @@ if (!info.exists) {
     Deno.exit(1)
 }
 
+function pathPieces(path) {
+    // const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(path)
+    path = (path.path || path) // if given ItemInfo object
+    const result = Path.parse(path)
+    const folderList = []
+    let dirname = result.dir
+    while (true) {
+        folderList.push(Path.basename(dirname))
+        // if at the top 
+        if (dirname == Path.basename(dirname)) {
+            break
+        }
+        dirname = Path.dirname(dirname)
+    }
+    folderList.reverse()
+    return [ folderList, result.name, result.ext ]
+}
+    
 const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(path)
 // const contents = await FileSystem.read(path)
 // const newHeader = `#!/usr/bin/env sh
