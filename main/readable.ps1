@@ -2,7 +2,7 @@
 "\"",`$(echo --% ' |out-null)" >$null;function :{};function dv{<#${/*'>/dev/null )` 2>/dev/null;dv() { #>
         echo "1.24.0"; : --% ' |out-null <#';
     };
-    version="$(deno_version)";
+    version="$(dv)";
     deno="$HOME/.deno/$version/bin/deno";
     # 
     # try to run immediately
@@ -80,12 +80,12 @@
     # 
 #>};# powershell portion
     # 
-    $DenoInstall = "${HOME}\.deno\$(deno_version)";
+    $DenoInstall = "${HOME}\.deno\$(dv)";
     $BinDir = "$DenoInstall\bin";
     $DenoExe = "$BinDir\deno.exe";
     if (-not(Test-Path -Path "$DenoExe" -PathType Leaf)) {
         $DenoZip = "$BinDir\deno.zip";
-        $DenoUri = "https://github.com/denoland/deno/releases/download/v$(deno_version)/deno-x86_64-pc-windows-msvc.zip";
+        $DenoUri = "https://github.com/denoland/deno/releases/download/v$(dv)/deno-x86_64-pc-windows-msvc.zip";
 
         # GitHub requires TLS 1.2
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;
