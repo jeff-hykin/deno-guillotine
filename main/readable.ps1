@@ -80,11 +80,11 @@
     # 
 #>};# powershell portion
     # 
-    $DenoInstall = "${HOME}\.deno\$(dv)";
-    $BinDir = "$DenoInstall\bin";
-    $DenoExe = "$BinDir\deno.exe";
+    $DenoInstall = "${HOME}/.deno/$(dv)";
+    $BinDir = "$DenoInstall/bin";
+    $DenoExe = "$BinDir/deno.exe";
     if (-not(Test-Path -Path "$DenoExe" -PathType Leaf)) {
-        $DenoZip = "$BinDir\deno.zip";
+        $DenoZip = "$BinDir/deno.zip";
         $DenoUri = "https://github.com/denoland/deno/releases/download/v$(dv)/deno-x86_64-pc-windows-msvc.zip";
 
         # GitHub requires TLS 1.2
@@ -93,9 +93,28 @@
         if (!(Test-Path $BinDir)) {
             New-Item $BinDir -ItemType Directory | Out-Null;
         }
-
-        curl.exe -Lo $DenoZip $DenoUri;
-        tar.exe xf $DenoZip -C $BinDir;
+        
+        Function Test-CommandExists {
+            Param ($command);
+            $oldPreference = $ErrorActionPreference;
+            $ErrorActionPreference = "stop";
+            try {if(Get-Command "$command"){RETURN $true}}
+            Catch {Write-Host "$command does not exist"; RETURN $false};
+            Finally {$ErrorActionPreference=$oldPreference};
+        } #end function test-CommandExists
+        
+        if (Test-CommandExists curl) {
+            curl -Lo $DenoZip $DenoUri;
+        } else {
+            curl.exe -Lo $DenoZip $DenoUri;
+        }
+        
+        if (Test-CommandExists curl) {
+            tar xf $DenoZip -C $BinDir;
+        } else {
+            tar -Lo $DenoZip $DenoUri;
+        }
+        
         Remove-Item $DenoZip;
 
         $User = [EnvironmentVariableTarget]::User;
@@ -104,6 +123,6 @@
             [Environment]::SetEnvironmentVariable('Path', "$Path;$BinDir", $User);
             $Env:Path += ";$BinDir";
         }
-    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; Exit $LastExitCode
+    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; echo "done"; Exit $LastExitCode
 # */0}`;
 console.log("Hello World")
