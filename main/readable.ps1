@@ -71,8 +71,6 @@
         esac;
     fi;
     deno_uri="https://github.com/$repo/releases/download/v$version/deno-$target.zip";
-    deno_install="${DENO_INSTALL:-$HOME/.deno}";
-    bin_dir="$deno_install/bin";
     exe="$bin_dir/deno";
     if [ ! -d "$bin_dir" ]; then
         mkdir -p "$bin_dir";
