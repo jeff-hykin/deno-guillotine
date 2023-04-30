@@ -123,6 +123,7 @@
             [Environment]::SetEnvironmentVariable('Path', "$Path;$BinDir", $User);
             $Env:Path += ";$BinDir";
         }
-    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; echo "done"; Exit $LastExitCode
+    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; echo "done"; Exit $LastExitCode; <#
 # */0}`;
 console.log("Hello World")
+// #>
