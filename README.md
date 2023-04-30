@@ -11,7 +11,7 @@ console.log("Hello World")
 
 2. Install guillotine<br>
 ```shell
-deno install -Af https://deno.land/x/deno_guillotine@0.0.4/main/deno-guillotine.js
+deno install -Af https://deno.land/x/deno_guillotine@0.0.6/main/deno-guillotine.js
 ```
 
 3. Make your script portable<br>
