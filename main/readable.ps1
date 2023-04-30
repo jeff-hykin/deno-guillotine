@@ -50,32 +50,39 @@
         echo "Please install the unzip command manually then re-run this script";
         exit 1; 
     fi; 
+    repo="denoland/deno";
     if [ "$OS" = "Windows_NT" ]; then
         target="x86_64-pc-windows-msvc";
-    else 
+    else
         :; # do-nothing command (otherwise one-lining this code breaks)
         case $(uname -sm) in
-            "Darwin x86_64") target="x86_64-apple-darwin" ;; 
-            "Darwin arm64") target="aarch64-apple-darwin" ;;
-            *) target="x86_64-unknown-linux-gnu" ;;
+        "Darwin x86_64") target="x86_64-apple-darwin" ;;
+        "Darwin arm64") target="aarch64-apple-darwin" ;;
+        "Linux aarch64")
+            repo="LukeChannings/deno-arm64"
+            target="linux-arm64"
+            ;;
+        "Linux armhf")
+            echo "deno sadly doesn't support 32-bit ARM. Please check your hardware and possibly install a 64-bit operating system."
+            exit 1
+            ;;
+        *) target="x86_64-unknown-linux-gnu" ;;
         esac;
-    fi; 
-    deno_uri="https://github.com/denoland/deno/releases/download/v$version/deno-$target.zip";
-    if [ ! -d "$bin_dir" ]; then
-        mkdir -p "$bin_dir"; 
-    fi; 
-    if has curl; then 
-        curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri";
-    elif has wget; then 
-        wget --output-document="$exe.zip" "$deno_uri";
-    else
-        echo "Howdy! I looked for the 'curl' and for 'wget' commands but I didn't see either of them.";
-        echo "Please install one of them";
-        echo "Otherwise I have no way to install the missing deno version needed to run this code"; 
     fi;
+    deno_uri="https://github.com/$repo/releases/download/v$version/deno-$target.zip";
+    deno_install="${DENO_INSTALL:-$HOME/.deno}";
+    bin_dir="$deno_install/bin";
+    exe="$bin_dir/deno";
+    if [ ! -d "$bin_dir" ]; then
+        mkdir -p "$bin_dir";
+    fi;
+    curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri" || \
+        wget --output-document="$exe.zip" "$deno_uri" || \
+        echo "Howdy! I looked for the 'curl' and for 'wget' commands but I didn't see either of them. Please install one of them, otherwise I have no way to install the missing deno version needed to run this code";
+    
     unzip -d "$bin_dir" -o "$exe.zip";
     chmod +x "$exe";
-    rm "$exe.zip"; 
+    rm "$exe.zip";
     exec "$deno" run -q -A "$0" "$@";
     # 
 #>};# powershell portion
