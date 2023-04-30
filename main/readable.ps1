@@ -54,7 +54,8 @@
     if [ "$OS" = "Windows_NT" ]; then
         target="x86_64-pc-windows-msvc";
     else
-        :; # do-nothing command (otherwise one-lining this code breaks)
+        # do-nothing command (otherwise one-lining this code breaks)
+        :; 
         case $(uname -sm) in
         "Darwin x86_64") target="x86_64-apple-darwin" ;;
         "Darwin arm64") target="aarch64-apple-darwin" ;;
@@ -76,17 +77,21 @@
     if [ ! -d "$bin_dir" ]; then
         mkdir -p "$bin_dir";
     fi;
-    curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri" || \
-        wget --output-document="$exe.zip" "$deno_uri" || \
-        echo "Howdy! I looked for the 'curl' and for 'wget' commands but I didn't see either of them. Please install one of them, otherwise I have no way to install the missing deno version needed to run this code";
     
+    if ! curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri"; then
+        if ! wget --output-document="$exe.zip" "$deno_uri"; then
+            echo "Howdy! I looked for the 'curl' and for 'wget' commands but I didn't see either of them. Please install one of them, otherwise I have no way to install the missing deno version needed to run this code";
+            exit 1;
+        fi;
+    fi;
     unzip -d "$bin_dir" -o "$exe.zip";
     chmod +x "$exe";
     rm "$exe.zip";
     exec "$deno" run -q -A "$0" "$@";
     # 
-#>};# powershell portion
+    # powershell portion
     # 
+#>};
     $DenoInstall = "${HOME}/.deno/$(dv)";
     $BinDir = "$DenoInstall/bin";
     $DenoExe = "$BinDir/deno.exe";
@@ -99,7 +104,7 @@
 
         if (!(Test-Path $BinDir)) {
             New-Item $BinDir -ItemType Directory | Out-Null;
-        }
+        };
         
         Function Test-CommandExists {
             Param ($command);
@@ -108,19 +113,19 @@
             try {if(Get-Command "$command"){RETURN $true}}
             Catch {Write-Host "$command does not exist"; RETURN $false};
             Finally {$ErrorActionPreference=$oldPreference};
-        } #end function test-CommandExists
+        };
         
         if (Test-CommandExists curl) {
             curl -Lo $DenoZip $DenoUri;
         } else {
             curl.exe -Lo $DenoZip $DenoUri;
-        }
+        };
         
         if (Test-CommandExists curl) {
             tar xf $DenoZip -C $BinDir;
         } else {
             tar -Lo $DenoZip $DenoUri;
-        }
+        };
         
         Remove-Item $DenoZip;
 
@@ -130,7 +135,7 @@
             [Environment]::SetEnvironmentVariable('Path', "$Path;$BinDir", $User);
             $Env:Path += ";$BinDir";
         }
-    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; echo "done"; Exit $LastExitCode; <#
+    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; Exit $LastExitCode; <#
 # */0}`;
 console.log("Hello World")
 // #>
