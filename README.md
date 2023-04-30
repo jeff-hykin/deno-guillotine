@@ -11,14 +11,14 @@ console.log("Hello World")
 
 2. Install guillotine<br>
 ```shell
-deno install -Af https://deno.land/x/deno_guillotine@0.0.7/main/deno-guillotine.js
+deno install -Af https://deno.land/x/deno_guillotine@0.0.8/main/deno-guillotine.js
 ```
 
 3. Make your script portable<br>
 ```shell
 deno-guillotine ./example.js
 # if you have a particular version of deno you want to use, include it as the second argument
-deno-guillotine ./example.js 1.24.3
+deno-guillotine ./example.js 1.33.1
 ```
 
 4. Profit<br>
