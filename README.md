@@ -36,8 +36,8 @@ deno-guillotine ./install.js 1.33.1
 
 - Deno guillotine will have generated two files, but one is just a symlink to the other. And if you don't want two files there are some compromises to get away with a single file:
   - Technically `install.ps1` is the only file needed. Typing `./install.ps1` on any OS will execute correctly.<br>The `.ps1` extension is only needed for Windows, however, I find the `.ps1` very ugly. So, in order to make `./install` work on all systems:
-    - On Windows `./example` will naturally run the `example.ps1` file (the file needs the extension, but the command line doesn't).
-    - On Linux/Mac a `./install` file is created as symlink to `install.ps1`. And now typing `./install` in the CLI will execute the `./install.ps1` file.
+    - On Windows, if the file is called `./install.ps1` then typing `./install` in the command line naturally execute it (no change needed).
+    - On Linux/Mac we can make a `./install` file that is just a relative symlink to `install.ps1`. Volia, typing `./install` now executes the `./install.ps1` file.
   - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
 
 
