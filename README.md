@@ -1,6 +1,12 @@
 # What is this for?
 
-Making cross-platform install scripts (using Deno) that work on a freshly setup PC; **the user does not need to install Deno, nor anything else**. Just copy the script file and exeute it. It is the same script for Windows, as it is for Raspbian OS, as it is for 86x MacOS; a script that is still editable/readable JavaScript (e.g. not compiled/mangled).
+Making cross platform scripts that have 0 install steps / instructions
+- The user does not need to install Curl/Node/Deno, nor anything else
+- The script does not need to "target" an OS; it is a single script, the same file for all OS's
+- The script is not a binary and is not compiled/mangled; it is readable/editable JavaScript
+- The script will not touch anything installed by the user (no pollution/side-effects)
+- The script will auto-download a specific version of Deno to an isolated folder, and then run itself using that exact version of Deno to ensure consistent/reproducable behavior.
+- Any Deno.land module can be imported/used, no need to reinvent the wheel or bundle code.
 
 This is possible because of using some rare builtin tools that allow for a single file to valid bash, and valid powershell, AND valid JavaScript (based partly on [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
