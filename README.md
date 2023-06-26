@@ -32,7 +32,7 @@ deno-guillotine ./install.js 1.33.1
 4. Profit<br>
 - Two files will have been generated, which I'll explain in a moment. More importantly though, typing `./install` in the command line will now try an execute the script (even on Windows)
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
-  - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts of can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
+  - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
 
 - Deno guillotine will have generated two files, but one is just a symlink to the other. And if you don't want two files there are some compromises to get away with a single file:
   - Technically `install.ps1` is the only file needed. Typing `./install.ps1` on any OS will execute correctly.<br>The `.ps1` extension is only needed for Windows, however, I find the `.ps1` very ugly. So, in order to make `./install` work on all systems:
