@@ -1,6 +1,8 @@
 # What is this for?
 
-Making scripts that work on a freshly setup PC (no prerequisites/manual dependencies)
+Making scripts that work on a freshly setup PC (no prerequisites/manual dependencies). The user does not need to install Deno, nor anything else. Just ship them the generated script; the same script for Windows, as it is for Raspbian OS, as it is for 86x MacOS; a script that is still editable (e.g. not compiled/mangled). 
+
+This is possible because of using some rare builtin tools that allow for a single file to valid bash, and valid powershell, AND valid JavaScript (based partly on [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
 # How do I use it?
 
@@ -22,8 +24,15 @@ deno-guillotine ./example.js 1.33.1
 ```
 
 4. Profit<br>
-It will generate two files. One with no extension, and one with a `.ps1` extension. One file is a shortcut to the other. Typing `./example` will run the file with a specific version of deno, and if the user doesn't have that version its downloaded automatically. This script also does not modify the user's PATH, so it will never override their version of deno if they have one. Technically only the .ps1 file is needed and running `./example.ps1` will work on all platforms, but obviously typing that extra `.ps1` is ugly. Which is why the extra file is generated as well to make the `./example` work cross platform.
+- Two files will have been generated, which I'll explain in a moment. More importantly though, typing `./example` in the command line will now try an execute the script (even on Windows)
+  - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch. If the specified version of Deno isn't available, then it is downloaded. The download will not modify PATH, and will not touch/change any existing Deno install. Once the specified version of Deno is available, the script will execute itself using that version of Deno.
+  - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**. `Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts of can be executed. After that, it follows the same process as the other operating systems (downloads the spcific version of Deno if needed, and executes itself using that version).
 
-# How does it work?
+- Deno guillotine will have generated two files, but one is just a symlink to the other. And if you don't want two files there are some compromises to get away with a single file:
+  - Technically executing `./example.ps1` will run on all OS's (Linux/Mac ignore the `.ps1` and run it using bash/zsh/etc). However, I find that very ugly, it would be much better to type `./example` and the script execute. On Windows `./example` will actually run the `example.ps1` file. On Linux/Mac adding a symlink to the `.ps1` file allows `./example` to be used to execute the file.
+  - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
 
-Magic. The generated script is valid powershell, bash, and JavaScript all at the same time, which is what allows it to run cross-platform. I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and I may write more in time. 
+
+# How can something be valid Powershell, Bash, and Deno all at the same time?
+
+I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
