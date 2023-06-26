@@ -4,7 +4,7 @@ Making scripts that work on a freshly setup PC => the user does not need to inst
 
 This is possible because of using some rare builtin tools that allow for a single file to valid bash, and valid powershell, AND valid JavaScript (based partly on [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
-# How do I use it?
+# How do I make an installer script?
 
 1. Write a deno script, lets call it `example.js`<br>
 ```js
