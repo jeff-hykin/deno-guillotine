@@ -31,7 +31,7 @@ deno-guillotine ./example.js 1.33.1
 
 4. Profit<br>
 - Two files will have been generated, which I'll explain in a moment. More importantly though, typing `./example` in the command line will now try an execute the script (even on Windows)
-  - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch. If the specified version of Deno isn't available, then it is downloaded. The download will not modify PATH, and will not touch/change any existing Deno install. Once the specified version of Deno is available, the script will execute itself using that version of Deno.
+  - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**. `Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts of can be executed. After that, it follows the same process as the other operating systems (downloads the spcific version of Deno if needed, and executes itself using that version).
 
 - Deno guillotine will have generated two files, but one is just a symlink to the other. And if you don't want two files there are some compromises to get away with a single file:
