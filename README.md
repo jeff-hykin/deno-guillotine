@@ -1,6 +1,6 @@
 # What is this for?
 
-Making scripts that work on a freshly setup PC => the user does not need to install Deno, nor anything else. Just copy the script file and exeute it. It is the same script for Windows, as it is for Raspbian OS, as it is for 86x MacOS; a script that is still editable/readable JavaScript (e.g. not compiled/mangled).
+Making cross-platform install scripts (using Deno) that work on a freshly setup PC; **the user does not need to install Deno, nor anything else**. Just copy the script file and exeute it. It is the same script for Windows, as it is for Raspbian OS, as it is for 86x MacOS; a script that is still editable/readable JavaScript (e.g. not compiled/mangled).
 
 This is possible because of using some rare builtin tools that allow for a single file to valid bash, and valid powershell, AND valid JavaScript (based partly on [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
