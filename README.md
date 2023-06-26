@@ -12,7 +12,7 @@ This is possible because of some rare builtin tools that allow for a single file
 
 # How do I make an installer script?
 
-1. Write a deno script, lets call it `example.js`<br>
+1. Write a Deno script, lets call it `example.js`<br>
 ```js
 console.log("Hello World")
 ```
