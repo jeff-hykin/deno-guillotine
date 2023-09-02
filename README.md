@@ -17,12 +17,12 @@ This is possible because of some rare builtin tools that allow for a single file
 console.log("Hello World")
 ```
 
-2. Install guillotine<br>
+2. Install the cli helper (guillotine) to make your script portable<br>
 ```shell
 deno install -Af https://deno.land/x/deno_guillotine@0.0.8/main/deno-guillotine.js
 ```
 
-3. Make your script portable<br>
+3. Use it to make your script portable<br>
 ```shell
 deno-guillotine ./install.js
 # if you have a particular version of deno you want to use, include it as the second argument
