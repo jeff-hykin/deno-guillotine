@@ -34,8 +34,8 @@ deno-guillotine ./install.js 1.33.1
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
 
-- Deno guillotine will have generated two files, but one is just a symlink to the other. And if you don't want two files there are some compromises to get away with a single file:
-  - Technically `install.ps1` is the only file needed. Typing `./install.ps1` on any OS will execute correctly.<br>The `.ps1` extension is only needed for Windows, however, I find the `.ps1` very ugly. So, in order to make `./install` work on all systems:
+- Two files are generated, but one is just a symlink to the other. And we can get away with a single file (with some compromises):
+  - Technically `install.ps1` is the only file needed. Typing `./install.ps1` on any OS will execute correctly.<br>However, I find the `.ps1` ugly. And the `.ps1` is only needed for Windows. The other file (the symlink) is what makes it possible to do `./install` on all systems:
     - On Windows, if the file is called `./install.ps1` then typing `./install` in the command line naturally execute it (no change needed).
     - On Linux/Mac we can make a `./install` file that is just a relative symlink to `install.ps1`. Volia, typing `./install` now executes the `./install.ps1` file.
   - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
