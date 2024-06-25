@@ -26,11 +26,11 @@ export function enhanceScript({filePath, jsFileContent, denoVersion, additionalA
     }
     
     // 
-    // get filePathNoExtension
+    // get filePathNameNoExt
     // 
-    let filePathNoExtension = filePath
-    if (filePath.includes(".")) { 
-        filePathNoExtension = filePath.split(".").slice(0,-1).join(".")
+    let filePathNameNoExt = Path.basename(filePath)
+    if (filePathNameNoExt.includes(".")) { 
+        filePathNameNoExt = filePathNameNoExt.split(".").slice(0,-1).join(".")
     }
     
     // 
@@ -69,7 +69,7 @@ echo "${denoVersion}"; : --% ' |out-null <#'; }; version="$(dv)"; deno="$HOME/.d
     newContents = newHeader + newContents + "\n// (this comment is part of deno-guillotine, dont remove) #>"    
 
     return {
-        symlinkPath: `./${Path.basename(filePathNoExtension)}.ps1`,
+        symlinkPath: `./${filePathNameNoExt}.ps1`,
         newContents,
     }
 }
