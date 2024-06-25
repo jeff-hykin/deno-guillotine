@@ -39,8 +39,18 @@ deno-guillotine ./install.js 1.33.1
     - On Windows, if the file is called `./install.ps1` then typing `./install` in the command line naturally execute it (no change needed).
     - On Linux/Mac we can make a `./install` file that is just a relative symlink to `install.ps1`. Volia, typing `./install` now executes the `./install.ps1` file.
   - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
+  
+  
+# How do I verify this isn't malicious?
 
-
+Glad you asked!
+- Start by looking at `./main/readable.ps1`
+    - Its a modified version of the official Deno install script
+    - It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)
+    - Now that deno has arm64 support, a future deno-guillotine update will remove the LukeChannings changes
+- Once `./main/readable.ps1` is verified, look at `inlined.ps1`
+- Once that is looked at, verify the embeded inlined version inside of `deno-guillotine.js`
+- Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
 # How can something be valid Powershell, Bash, and Deno all at the same time?
 
 I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
