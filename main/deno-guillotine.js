@@ -99,15 +99,12 @@ import { version } from "./version.js"
     // 
     // setup
     // 
-    const [ folders, itemName, itemExtensionWithDot ] = FileSystem.pathPieces(path)
-    const normalPath = `${folders.join('/')}/${itemName}`
-    const ps1Path = `${folders.join('/')}/${itemName}.ps1`
     const contents = Deno.readTextFileSync(path)
 
     // 
     // enhance script
     // 
-    const { newContents, symlinkPath } = enhanceScript({
+    const { newContents, symlinkPath, normalPath, ps1Path } = enhanceScript({
         filePath: path,
         jsFileContent: contents,
         denoVersion,

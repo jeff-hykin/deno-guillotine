@@ -42,7 +42,11 @@ deno-guillotine ./install.js --add-arg '--no-npm' --add-arg '--unstable'
     - On Linux/Mac we can make a `./install` file that is just a relative symlink to `install.ps1`. Volia, typing `./install` now executes the `./install.ps1` file.
   - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
   
-  
+# How can something be valid Powershell, Bash, and Deno all at the same time?
+
+I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
+
+
 # How do I verify this isn't malicious?
 
 Glad you asked!
@@ -61,6 +65,24 @@ Glad you asked!
     - GoodJs is a permissionless/frontend utility library I maintain
     - FileSystem is a quality of life wrapper around Deno's file system and path. I'd like to remove it from guillotine to make guillotine easier to verify, but thats future work for me.
 
-# How can something be valid Powershell, Bash, and Deno all at the same time?
 
-I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
+# Can I generate these files client-side?
+
+Not sure why you would, but actually yes you can. There is a pure-function API to enable this functionality from within any JavaScript runtime.
+
+```js
+import { enhanceScript } from "https://deno.land/x/deno_guillotine/main/deno-guillotine-api.js"
+
+const { newContents, symlinkPath, normalPath, ps1Path } = enhanceScript({
+    filePath: "./my_cli_scipt.js",
+    jsFileContent: `console.log("Hello World")`,
+    denoVersion: "1.44.4",
+    additionalArgs: [ "--no-npm", "--unstable" ],
+    additionalArgsForUnix: [ ],
+    additionalArgsForWindows: [ ],
+    baseArgs: [ "--quiet", "-A", "--no-lock", ],
+})
+
+Deno.writeTextFileSync(ps1Path, newContents)
+Deno.symlinkSync(symlinkPath, normalPath)
+```

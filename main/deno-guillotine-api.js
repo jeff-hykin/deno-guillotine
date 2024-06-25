@@ -1,4 +1,6 @@
 import * as Path from "https://deno.land/std@0.128.0/path/mod.ts"
+import { pathPieces } from "https://deno.land/x/good@1.7.1.1/flattened/path_pieces.js"
+
 const specialCharPattern = /\s|\\|\"|'|`|#|\$|%|&|;|\*|\(|\)|\[|\]|\{|\}|,|<|>|\?|@|\^|\||~/
 const shellEscape = (arg)=>`'${arg.replace(/'/g,`'"'"'`)}'`
 
@@ -32,6 +34,9 @@ export function enhanceScript({filePath, jsFileContent, denoVersion, additionalA
     if (filePathNameNoExt.includes(".")) { 
         filePathNameNoExt = filePathNameNoExt.split(".").slice(0,-1).join(".")
     }
+    const [ folders, itemName, itemExtensionWithDot ] = pathPieces(filePath)
+    const normalPath = `${folders.join('/')}/${itemName}`
+    const ps1Path = `${folders.join('/')}/${itemName}.ps1`
     
     // 
     // setup CLI args
@@ -70,6 +75,8 @@ echo "${denoVersion}"; : --% ' |out-null <#'; }; version="$(dv)"; deno="$HOME/.d
 
     return {
         symlinkPath: `./${filePathNameNoExt}.ps1`,
+        normalPath,
+        ps1Path,
         newContents,
     }
 }

@@ -7256,9 +7256,9 @@ but existingItem didn't actually exist`);
     if (cache2[path7]) {
       return cache2[path7];
     }
-    const [folders2, name, extension] = FileSystem.pathPieces(FileSystem.makeAbsolutePath(path7));
+    const [folders, name, extension] = FileSystem.pathPieces(FileSystem.makeAbsolutePath(path7));
     let topDownPath = ``;
-    for (const eachFolderName of folders2) {
+    for (const eachFolderName of folders) {
       topDownPath += `/${eachFolderName}`;
       if (cache2[topDownPath]) {
         topDownPath = cache2[topDownPath];
@@ -7557,9 +7557,9 @@ but existingItem didn't actually exist`);
       if (cache2[path7]) {
         return cache2[path7];
       }
-      const [folders2, name, extension] = FileSystem.pathPieces(FileSystem.makeAbsolutePath(path7));
+      const [folders, name, extension] = FileSystem.pathPieces(FileSystem.makeAbsolutePath(path7));
       let topDownPath = ``;
-      for (const eachFolderName of folders2) {
+      for (const eachFolderName of folders) {
         topDownPath += `/${eachFolderName}`;
         if (cache2[topDownPath]) {
           topDownPath = cache2[topDownPath];
@@ -8223,6 +8223,23 @@ function didYouMean(arg) {
   return [...possibleWords].sort((a, b) => levenshteinDistanceBetween(givenWord, a) - levenshteinDistanceBetween(givenWord, b)).slice(0, suggestionLimit);
 }
 
+// https://deno.land/x/good@1.7.1.1/flattened/path_pieces.js
+function pathPieces(path7) {
+  path7 = path7.path || path7;
+  const result = parse3(path7);
+  const folderList = [];
+  let dirname9 = result.dir;
+  while (true) {
+    folderList.push(basename3(dirname9));
+    if (dirname9 == dirname3(dirname9)) {
+      break;
+    }
+    dirname9 = dirname3(dirname9);
+  }
+  folderList.reverse();
+  return [folderList, result.name, result.ext];
+}
+
 // main/deno-guillotine-api.js
 var specialCharPattern = /\s|\\|\"|'|`|#|\$|%|&|;|\*|\(|\)|\[|\]|\{|\}|,|<|>|\?|@|\^|\||~/;
 var shellEscape = (arg) => `'${arg.replace(/'/g, `'"'"'`)}'`;
@@ -8251,10 +8268,13 @@ NOTE! On unix/not-windows, args will be be passed as strings. But on windows, th
 This is because its impossible to reliably/generically escape arguments on windows.`);
     }
   }
-  let filePathNoExtension = filePath;
-  if (filePath.includes(".")) {
-    filePathNoExtension = filePath.split(".").slice(0, -1).join(".");
+  let filePathNameNoExt = basename3(filePath);
+  if (filePathNameNoExt.includes(".")) {
+    filePathNameNoExt = filePathNameNoExt.split(".").slice(0, -1).join(".");
   }
+  const [folders, itemName, itemExtensionWithDot] = pathPieces(filePath);
+  const normalPath2 = `${folders.join("/")}/${itemName}`;
+  const ps1Path2 = `${folders.join("/")}/${itemName}.ps1`;
   const denoVersionList = denoVersion2.split(".").map((each2) => each2 - 0);
   const [major, minor, patch, ...rest] = denoVersionList;
   const supportsNoLock = major > 0 && (minor > 27 || minor == 27 && patch > 1);
@@ -8275,13 +8295,15 @@ echo "${denoVersion2}"; : --% ' |out-null <#'; }; version="$(dv)"; deno="$HOME/.
   newContents2 = newContents2.replace(/#>/g, "#\\>");
   newContents2 = newHeader + newContents2 + "\n// (this comment is part of deno-guillotine, dont remove) #>";
   return {
-    symlinkPath: `./${basename3(filePathNoExtension)}.ps1`,
+    symlinkPath: `./${filePathNameNoExt}.ps1`,
+    normalPath: normalPath2,
+    ps1Path: ps1Path2,
     newContents: newContents2
   };
 }
 
 // main/version.js
-var version2 = "1.0.0.0";
+var version2 = "1.0.0.1";
 
 // main/deno-guillotine.js
 var { help: showHelp, version: showVersion } = parseArgs({
@@ -8349,11 +8371,8 @@ if (fileDoenstExist) {
   console.log(`Hey! the file you gave me doesn't seem to exist: ${path6}`);
   Deno.exit(1);
 }
-var [folders, itemName, itemExtensionWithDot] = FileSystem.pathPieces(path6);
-var normalPath = `${folders.join("/")}/${itemName}`;
-var ps1Path = `${folders.join("/")}/${itemName}.ps1`;
 var contents = Deno.readTextFileSync(path6);
-var { newContents, symlinkPath } = enhanceScript({
+var { newContents, symlinkPath, normalPath, ps1Path } = enhanceScript({
   filePath: path6,
   jsFileContent: contents,
   denoVersion,
