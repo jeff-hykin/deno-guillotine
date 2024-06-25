@@ -51,6 +51,7 @@ Glad you asked!
 - Once `./main/readable.ps1` is verified, look at `inlined.ps1`
 - Once that is looked at, verify the embeded inlined version inside of `deno-guillotine.js`
 - Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
+
 # How can something be valid Powershell, Bash, and Deno all at the same time?
 
 I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
