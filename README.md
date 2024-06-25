@@ -26,7 +26,9 @@ deno install -Af https://deno.land/x/deno_guillotine@0.0.9/main/deno-guillotine.
 ```shell
 deno-guillotine ./install.js
 # if you have a particular version of deno you want to use, include it as the second argument
-deno-guillotine ./install.js 1.33.1
+deno-guillotine ./install.js 1.44.4
+# if you want to add an deno-run argument like --no-npm do it like this:
+deno-guillotine ./install.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
@@ -44,13 +46,20 @@ deno-guillotine ./install.js 1.33.1
 # How do I verify this isn't malicious?
 
 Glad you asked!
-- Start by looking at `./main/readable.ps1`
-    - Its a modified version of the official Deno install script
-    - It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)
-    - Now that deno has arm64 support, a future deno-guillotine update will remove the LukeChannings changes
-- Once `./main/readable.ps1` is verified, look at `inlined.ps1`
-- Once that is looked at, verify the embeded inlined version inside of `deno-guillotine.js`
-- Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
+1. Verify the installer script
+    - Start by looking at `./main/readable.ps1`
+        - Its a modified version of the official Deno install script
+        - It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)
+        - Now that deno has arm64 support directly, a future deno-guillotine update will remove the LukeChannings changes (e.g. TODO)
+    - Once `./main/readable.ps1` is verified, look at `inlined.ps1`
+    - Once that is looked at, verify the embeded inlined version inside of `deno-guillotine-api.js`
+    - Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
+2. Verify the main JavaScript
+    - Look at `deno-guillotine-api.js` (no permissions needed)
+    - Look at `deno-guillotine.js` (needs file permissions because its the CLI script)
+3. Bundle `deno-guillotine.js`, and inspect the dependencies
+    - GoodJs is a permissionless/frontend utility library I maintain
+    - FileSystem is a quality of life wrapper around Deno's file system and path. I'd like to remove it from guillotine to make guillotine easier to verify, but thats future work for me.
 
 # How can something be valid Powershell, Bash, and Deno all at the same time?
 
