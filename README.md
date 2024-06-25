@@ -19,7 +19,7 @@ console.log("Hello World")
 
 2. Install the cli helper (guillotine) to make your script portable<br>
 ```shell
-deno install -Af https://deno.land/x/deno_guillotine@0.0.9/main/deno-guillotine.js
+deno install -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 ```
 
 3. Use it to make your script portable<br>
