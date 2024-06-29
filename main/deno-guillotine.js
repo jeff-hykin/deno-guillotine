@@ -29,17 +29,17 @@ import { version } from "./version.js"
             deno-guillotine --version
             deno-guillotine --file ./your_file.js
             deno-guillotine --file ./your_file.js --deno-version ${Deno.version.deno}
-            deno-guillotine --file ./your_file.js \
-                --add-arg '--no-npm' \
+            deno-guillotine --file ./your_file.js \\
+                --add-arg '--no-npm' \\
                 --add-arg '--unstable'
             
-            deno-guillotine --file ./your_file.js \
-                --add-unix-arg '--unstable-ffi' \
+            deno-guillotine --file ./your_file.js \\
+                --add-unix-arg '--unstable-ffi' \\
                 --add-windows-arg '--unstable-cron'
             
-            deno-guillotine --file ./your_file.js \
-                --no-default-args \
-                --add-arg '--quiet' \
+            deno-guillotine --file ./your_file.js \\
+                --no-default-args \\
+                --add-arg '--quiet' \\
                 --add-arg '--allow-read'
         `)
         Deno.exit(0)
