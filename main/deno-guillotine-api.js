@@ -4,7 +4,7 @@ import { pathPieces } from "https://deno.land/x/good@1.7.1.1/flattened/path_piec
 const specialCharPattern = /\s|\\|\"|'|`|#|\$|%|&|;|\*|\(|\)|\[|\]|\{|\}|,|<|>|\?|@|\^|\||~/
 const shellEscape = (arg)=>`'${arg.replace(/'/g,`'"'"'`)}'`
 
-export function enhanceScript({filePath, jsFileContent, denoVersion, additionalArgs, additionalArgsForUnix, additionalArgsForWindows, baseArgs=["-q", "-A", "--no-lock"], }) {
+export function enhanceScript({filePath, jsFileContent, denoVersion, additionalArgs, additionalArgsForUnix, additionalArgsForWindows, baseArgs=["-q", "-A", "--no-lock", "--no-config"], }) {
     // 
     // validate parameters
     // 
@@ -44,8 +44,12 @@ export function enhanceScript({filePath, jsFileContent, denoVersion, additionalA
     const denoVersionList = denoVersion.split(".").map(each=>each-0)
     const [ major, minor, patch, ...rest ] = denoVersionList
     const supportsNoLock = (major > 0 && (minor > 27 || minor == 27 && patch > 1))
+    const supportsNoConfig = (major > 0 || (minor > 21))
     if (!supportsNoLock) {
         baseArgs = baseArgs.filter(each=>each != "--no-lock")
+    }
+    if (!supportsNoConfig) {
+        baseArgs = baseArgs.filter(each=>each != "--no-config")
     }
     const argsForUnix = [ ...baseArgs, ...additionalArgs.map(shellEscape), ...additionalArgsForUnix.map(shellEscape) ].join(" ")
     const argsForWindows = [ ...baseArgs, ...additionalArgs, ...additionalArgsForWindows ].join(" ")
