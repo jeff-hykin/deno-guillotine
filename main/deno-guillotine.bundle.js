@@ -73,12 +73,9 @@ function normalizeString(path7, allowAboveRoot, separator, isPathSeparator4) {
   let dots = 0;
   let code;
   for (let i = 0, len = path7.length; i <= len; ++i) {
-    if (i < len)
-      code = path7.charCodeAt(i);
-    else if (isPathSeparator4(code))
-      break;
-    else
-      code = CHAR_FORWARD_SLASH;
+    if (i < len) code = path7.charCodeAt(i);
+    else if (isPathSeparator4(code)) break;
+    else code = CHAR_FORWARD_SLASH;
     if (isPathSeparator4(code)) {
       if (lastSlash === i - 1 || dots === 1) {
       } else if (lastSlash !== i - 1 && dots === 2) {
@@ -104,17 +101,13 @@ function normalizeString(path7, allowAboveRoot, separator, isPathSeparator4) {
           }
         }
         if (allowAboveRoot) {
-          if (res.length > 0)
-            res += `${separator}..`;
-          else
-            res = "..";
+          if (res.length > 0) res += `${separator}..`;
+          else res = "..";
           lastSegmentLength = 2;
         }
       } else {
-        if (res.length > 0)
-          res += separator + path7.slice(lastSlash + 1, i);
-        else
-          res = path7.slice(lastSlash + 1, i);
+        if (res.length > 0) res += separator + path7.slice(lastSlash + 1, i);
+        else res = path7.slice(lastSlash + 1, i);
         lastSegmentLength = i - lastSlash - 1;
       }
       lastSlash = i;
@@ -130,10 +123,8 @@ function normalizeString(path7, allowAboveRoot, separator, isPathSeparator4) {
 function _format(sep9, pathObject) {
   const dir = pathObject.dir || pathObject.root;
   const base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-  if (!dir)
-    return base;
-  if (dir === pathObject.root)
-    return dir + base;
+  if (!dir) return base;
+  if (dir === pathObject.root) return dir + base;
   return dir + sep9 + base;
 }
 var WHITESPACE_ENCODINGS = {
@@ -191,8 +182,7 @@ function resolve(...pathSegments) {
     }
     assertPath(path7);
     const len = path7.length;
-    if (len === 0)
-      continue;
+    if (len === 0) continue;
     let rootEnd = 0;
     let device = "";
     let isAbsolute9 = false;
@@ -204,21 +194,18 @@ function resolve(...pathSegments) {
           let j = 2;
           let last = j;
           for (; j < len; ++j) {
-            if (isPathSeparator(path7.charCodeAt(j)))
-              break;
+            if (isPathSeparator(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             const firstPart = path7.slice(last, j);
             last = j;
             for (; j < len; ++j) {
-              if (!isPathSeparator(path7.charCodeAt(j)))
-                break;
+              if (!isPathSeparator(path7.charCodeAt(j))) break;
             }
             if (j < len && j !== last) {
               last = j;
               for (; j < len; ++j) {
-                if (isPathSeparator(path7.charCodeAt(j)))
-                  break;
+                if (isPathSeparator(path7.charCodeAt(j))) break;
               }
               if (j === len) {
                 device = `\\\\${firstPart}\\${path7.slice(last)}`;
@@ -258,8 +245,7 @@ function resolve(...pathSegments) {
       resolvedTail = `${path7.slice(rootEnd)}\\${resolvedTail}`;
       resolvedAbsolute = isAbsolute9;
     }
-    if (resolvedAbsolute && resolvedDevice.length > 0)
-      break;
+    if (resolvedAbsolute && resolvedDevice.length > 0) break;
   }
   resolvedTail = normalizeString(
     resolvedTail,
@@ -272,8 +258,7 @@ function resolve(...pathSegments) {
 function normalize(path7) {
   assertPath(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = 0;
   let device;
   let isAbsolute9 = false;
@@ -285,21 +270,18 @@ function normalize(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           const firstPart = path7.slice(last, j);
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return `\\\\${firstPart}\\${path7.slice(last)}\\`;
@@ -338,27 +320,22 @@ function normalize(path7) {
   } else {
     tail = "";
   }
-  if (tail.length === 0 && !isAbsolute9)
-    tail = ".";
+  if (tail.length === 0 && !isAbsolute9) tail = ".";
   if (tail.length > 0 && isPathSeparator(path7.charCodeAt(len - 1))) {
     tail += "\\";
   }
   if (device === void 0) {
     if (isAbsolute9) {
-      if (tail.length > 0)
-        return `\\${tail}`;
-      else
-        return "\\";
+      if (tail.length > 0) return `\\${tail}`;
+      else return "\\";
     } else if (tail.length > 0) {
       return tail;
     } else {
       return "";
     }
   } else if (isAbsolute9) {
-    if (tail.length > 0)
-      return `${device}\\${tail}`;
-    else
-      return `${device}\\`;
+    if (tail.length > 0) return `${device}\\${tail}`;
+    else return `${device}\\`;
   } else if (tail.length > 0) {
     return device + tail;
   } else {
@@ -368,37 +345,31 @@ function normalize(path7) {
 function isAbsolute(path7) {
   assertPath(path7);
   const len = path7.length;
-  if (len === 0)
-    return false;
+  if (len === 0) return false;
   const code = path7.charCodeAt(0);
   if (isPathSeparator(code)) {
     return true;
   } else if (isWindowsDeviceRoot(code)) {
     if (len > 2 && path7.charCodeAt(1) === CHAR_COLON) {
-      if (isPathSeparator(path7.charCodeAt(2)))
-        return true;
+      if (isPathSeparator(path7.charCodeAt(2))) return true;
     }
   }
   return false;
 }
 function join(...paths) {
   const pathsCount = paths.length;
-  if (pathsCount === 0)
-    return ".";
+  if (pathsCount === 0) return ".";
   let joined;
   let firstPart = null;
   for (let i = 0; i < pathsCount; ++i) {
     const path7 = paths[i];
     assertPath(path7);
     if (path7.length > 0) {
-      if (joined === void 0)
-        joined = firstPart = path7;
-      else
-        joined += `\\${path7}`;
+      if (joined === void 0) joined = firstPart = path7;
+      else joined += `\\${path7}`;
     }
   }
-  if (joined === void 0)
-    return ".";
+  if (joined === void 0) return ".";
   let needsReplace = true;
   let slashCount = 0;
   assert(firstPart != null);
@@ -409,8 +380,7 @@ function join(...paths) {
       if (isPathSeparator(firstPart.charCodeAt(1))) {
         ++slashCount;
         if (firstLen > 2) {
-          if (isPathSeparator(firstPart.charCodeAt(2)))
-            ++slashCount;
+          if (isPathSeparator(firstPart.charCodeAt(2))) ++slashCount;
           else {
             needsReplace = false;
           }
@@ -420,47 +390,38 @@ function join(...paths) {
   }
   if (needsReplace) {
     for (; slashCount < joined.length; ++slashCount) {
-      if (!isPathSeparator(joined.charCodeAt(slashCount)))
-        break;
+      if (!isPathSeparator(joined.charCodeAt(slashCount))) break;
     }
-    if (slashCount >= 2)
-      joined = `\\${joined.slice(slashCount)}`;
+    if (slashCount >= 2) joined = `\\${joined.slice(slashCount)}`;
   }
   return normalize(joined);
 }
 function relative(from, to) {
   assertPath(from);
   assertPath(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   const fromOrig = resolve(from);
   const toOrig = resolve(to);
-  if (fromOrig === toOrig)
-    return "";
+  if (fromOrig === toOrig) return "";
   from = fromOrig.toLowerCase();
   to = toOrig.toLowerCase();
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 0;
   let fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH)
-      break;
+    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH) break;
   }
   for (; fromEnd - 1 > fromStart; --fromEnd) {
-    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH)
-      break;
+    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 0;
   let toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH)
-      break;
+    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH) break;
   }
   for (; toEnd - 1 > toStart; --toEnd) {
-    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH)
-      break;
+    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -486,39 +447,31 @@ function relative(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (fromCode === CHAR_BACKWARD_SLASH)
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (fromCode === CHAR_BACKWARD_SLASH) lastCommonSep = i;
   }
   if (i !== length && lastCommonSep === -1) {
     return toOrig;
   }
   let out = "";
-  if (lastCommonSep === -1)
-    lastCommonSep = 0;
+  if (lastCommonSep === -1) lastCommonSep = 0;
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || from.charCodeAt(i) === CHAR_BACKWARD_SLASH) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "\\..";
+      if (out.length === 0) out += "..";
+      else out += "\\..";
     }
   }
   if (out.length > 0) {
     return out + toOrig.slice(toStart + lastCommonSep, toEnd);
   } else {
     toStart += lastCommonSep;
-    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH)
-      ++toStart;
+    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH) ++toStart;
     return toOrig.slice(toStart, toEnd);
   }
 }
 function toNamespacedPath(path7) {
-  if (typeof path7 !== "string")
-    return path7;
-  if (path7.length === 0)
-    return "";
+  if (typeof path7 !== "string") return path7;
+  if (path7.length === 0) return "";
   const resolvedPath = resolve(path7);
   if (resolvedPath.length >= 3) {
     if (resolvedPath.charCodeAt(0) === CHAR_BACKWARD_SLASH) {
@@ -539,8 +492,7 @@ function toNamespacedPath(path7) {
 function dirname(path7) {
   assertPath(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = -1;
   let end = -1;
   let matchedSlash = true;
@@ -553,20 +505,17 @@ function dirname(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return path7;
@@ -581,8 +530,7 @@ function dirname(path7) {
       if (path7.charCodeAt(1) === CHAR_COLON) {
         rootEnd = offset = 2;
         if (len > 2) {
-          if (isPathSeparator(path7.charCodeAt(2)))
-            rootEnd = offset = 3;
+          if (isPathSeparator(path7.charCodeAt(2))) rootEnd = offset = 3;
         }
       }
     }
@@ -600,10 +548,8 @@ function dirname(path7) {
     }
   }
   if (end === -1) {
-    if (rootEnd === -1)
-      return ".";
-    else
-      end = rootEnd;
+    if (rootEnd === -1) return ".";
+    else end = rootEnd;
   }
   return path7.slice(0, end);
 }
@@ -619,13 +565,11 @@ function basename(path7, ext = "") {
   if (path7.length >= 2) {
     const drive = path7.charCodeAt(0);
     if (isWindowsDeviceRoot(drive)) {
-      if (path7.charCodeAt(1) === CHAR_COLON)
-        start = 2;
+      if (path7.charCodeAt(1) === CHAR_COLON) start = 2;
     }
   }
   if (ext !== void 0 && ext.length > 0 && ext.length <= path7.length) {
-    if (ext.length === path7.length && ext === path7)
-      return "";
+    if (ext.length === path7.length && ext === path7) return "";
     let extIdx = ext.length - 1;
     let firstNonSlashEnd = -1;
     for (i = path7.length - 1; i >= start; --i) {
@@ -652,10 +596,8 @@ function basename(path7, ext = "") {
         }
       }
     }
-    if (start === end)
-      end = firstNonSlashEnd;
-    else if (end === -1)
-      end = path7.length;
+    if (start === end) end = firstNonSlashEnd;
+    else if (end === -1) end = path7.length;
     return path7.slice(start, end);
   } else {
     for (i = path7.length - 1; i >= start; --i) {
@@ -669,8 +611,7 @@ function basename(path7, ext = "") {
         end = i + 1;
       }
     }
-    if (end === -1)
-      return "";
+    if (end === -1) return "";
     return path7.slice(start, end);
   }
 }
@@ -699,10 +640,8 @@ function extname(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -726,8 +665,7 @@ function parse(path7) {
   assertPath(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
   const len = path7.length;
-  if (len === 0)
-    return ret;
+  if (len === 0) return ret;
   let rootEnd = 0;
   let code = path7.charCodeAt(0);
   if (len > 1) {
@@ -737,20 +675,17 @@ function parse(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               rootEnd = j;
@@ -781,8 +716,7 @@ function parse(path7) {
     ret.root = ret.dir = path7;
     return ret;
   }
-  if (rootEnd > 0)
-    ret.root = path7.slice(0, rootEnd);
+  if (rootEnd > 0) ret.root = path7.slice(0, rootEnd);
   let startDot = -1;
   let startPart = rootEnd;
   let end = -1;
@@ -803,10 +737,8 @@ function parse(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -824,8 +756,7 @@ function parse(path7) {
   }
   if (startPart > 0 && startPart !== rootEnd) {
     ret.dir = path7.slice(0, startPart - 1);
-  } else
-    ret.dir = ret.root;
+  } else ret.dir = ret.root;
   return ret;
 }
 function fromFileUrl(url) {
@@ -885,8 +816,7 @@ function resolve2(...pathSegments) {
   let resolvedAbsolute = false;
   for (let i = pathSegments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
     let path7;
-    if (i >= 0)
-      path7 = pathSegments[i];
+    if (i >= 0) path7 = pathSegments[i];
     else {
       const { Deno: Deno4 } = globalThis;
       if (typeof Deno4?.cwd !== "function") {
@@ -908,28 +838,20 @@ function resolve2(...pathSegments) {
     isPosixPathSeparator
   );
   if (resolvedAbsolute) {
-    if (resolvedPath.length > 0)
-      return `/${resolvedPath}`;
-    else
-      return "/";
-  } else if (resolvedPath.length > 0)
-    return resolvedPath;
-  else
-    return ".";
+    if (resolvedPath.length > 0) return `/${resolvedPath}`;
+    else return "/";
+  } else if (resolvedPath.length > 0) return resolvedPath;
+  else return ".";
 }
 function normalize2(path7) {
   assertPath(path7);
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   const isAbsolute9 = path7.charCodeAt(0) === CHAR_FORWARD_SLASH;
   const trailingSeparator = path7.charCodeAt(path7.length - 1) === CHAR_FORWARD_SLASH;
   path7 = normalizeString(path7, !isAbsolute9, "/", isPosixPathSeparator);
-  if (path7.length === 0 && !isAbsolute9)
-    path7 = ".";
-  if (path7.length > 0 && trailingSeparator)
-    path7 += "/";
-  if (isAbsolute9)
-    return `/${path7}`;
+  if (path7.length === 0 && !isAbsolute9) path7 = ".";
+  if (path7.length > 0 && trailingSeparator) path7 += "/";
+  if (isAbsolute9) return `/${path7}`;
   return path7;
 }
 function isAbsolute2(path7) {
@@ -937,44 +859,36 @@ function isAbsolute2(path7) {
   return path7.length > 0 && path7.charCodeAt(0) === CHAR_FORWARD_SLASH;
 }
 function join2(...paths) {
-  if (paths.length === 0)
-    return ".";
+  if (paths.length === 0) return ".";
   let joined;
   for (let i = 0, len = paths.length; i < len; ++i) {
     const path7 = paths[i];
     assertPath(path7);
     if (path7.length > 0) {
-      if (!joined)
-        joined = path7;
-      else
-        joined += `/${path7}`;
+      if (!joined) joined = path7;
+      else joined += `/${path7}`;
     }
   }
-  if (!joined)
-    return ".";
+  if (!joined) return ".";
   return normalize2(joined);
 }
 function relative2(from, to) {
   assertPath(from);
   assertPath(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   from = resolve2(from);
   to = resolve2(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 1;
   const fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (from.charCodeAt(fromStart) !== CHAR_FORWARD_SLASH)
-      break;
+    if (from.charCodeAt(fromStart) !== CHAR_FORWARD_SLASH) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 1;
   const toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (to.charCodeAt(toStart) !== CHAR_FORWARD_SLASH)
-      break;
+    if (to.charCodeAt(toStart) !== CHAR_FORWARD_SLASH) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -999,26 +913,20 @@ function relative2(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (fromCode === CHAR_FORWARD_SLASH)
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (fromCode === CHAR_FORWARD_SLASH) lastCommonSep = i;
   }
   let out = "";
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || from.charCodeAt(i) === CHAR_FORWARD_SLASH) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "/..";
+      if (out.length === 0) out += "..";
+      else out += "/..";
     }
   }
-  if (out.length > 0)
-    return out + to.slice(toStart + lastCommonSep);
+  if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
   else {
     toStart += lastCommonSep;
-    if (to.charCodeAt(toStart) === CHAR_FORWARD_SLASH)
-      ++toStart;
+    if (to.charCodeAt(toStart) === CHAR_FORWARD_SLASH) ++toStart;
     return to.slice(toStart);
   }
 }
@@ -1027,8 +935,7 @@ function toNamespacedPath2(path7) {
 }
 function dirname2(path7) {
   assertPath(path7);
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   const hasRoot = path7.charCodeAt(0) === CHAR_FORWARD_SLASH;
   let end = -1;
   let matchedSlash = true;
@@ -1042,10 +949,8 @@ function dirname2(path7) {
       matchedSlash = false;
     }
   }
-  if (end === -1)
-    return hasRoot ? "/" : ".";
-  if (hasRoot && end === 1)
-    return "//";
+  if (end === -1) return hasRoot ? "/" : ".";
+  if (hasRoot && end === 1) return "//";
   return path7.slice(0, end);
 }
 function basename2(path7, ext = "") {
@@ -1058,8 +963,7 @@ function basename2(path7, ext = "") {
   let matchedSlash = true;
   let i;
   if (ext !== void 0 && ext.length > 0 && ext.length <= path7.length) {
-    if (ext.length === path7.length && ext === path7)
-      return "";
+    if (ext.length === path7.length && ext === path7) return "";
     let extIdx = ext.length - 1;
     let firstNonSlashEnd = -1;
     for (i = path7.length - 1; i >= 0; --i) {
@@ -1086,10 +990,8 @@ function basename2(path7, ext = "") {
         }
       }
     }
-    if (start === end)
-      end = firstNonSlashEnd;
-    else if (end === -1)
-      end = path7.length;
+    if (start === end) end = firstNonSlashEnd;
+    else if (end === -1) end = path7.length;
     return path7.slice(start, end);
   } else {
     for (i = path7.length - 1; i >= 0; --i) {
@@ -1103,8 +1005,7 @@ function basename2(path7, ext = "") {
         end = i + 1;
       }
     }
-    if (end === -1)
-      return "";
+    if (end === -1) return "";
     return path7.slice(start, end);
   }
 }
@@ -1129,10 +1030,8 @@ function extname2(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -1155,8 +1054,7 @@ function format2(pathObject) {
 function parse2(path7) {
   assertPath(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
-  if (path7.length === 0)
-    return ret;
+  if (path7.length === 0) return ret;
   const isAbsolute9 = path7.charCodeAt(0) === CHAR_FORWARD_SLASH;
   let start;
   if (isAbsolute9) {
@@ -1185,10 +1083,8 @@ function parse2(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -1213,10 +1109,8 @@ function parse2(path7) {
     }
     ret.ext = path7.slice(startDot, end);
   }
-  if (startPart > 0)
-    ret.dir = path7.slice(0, startPart - 1);
-  else if (isAbsolute9)
-    ret.dir = "/";
+  if (startPart > 0) ret.dir = path7.slice(0, startPart - 1);
+  else if (isAbsolute9) ret.dir = "/";
   return ret;
 }
 function fromFileUrl2(url) {
@@ -1332,12 +1226,9 @@ function normalizeString2(path7, allowAboveRoot, separator, isPathSeparator4) {
   let dots = 0;
   let code;
   for (let i = 0, len = path7.length; i <= len; ++i) {
-    if (i < len)
-      code = path7.charCodeAt(i);
-    else if (isPathSeparator4(code))
-      break;
-    else
-      code = CHAR_FORWARD_SLASH2;
+    if (i < len) code = path7.charCodeAt(i);
+    else if (isPathSeparator4(code)) break;
+    else code = CHAR_FORWARD_SLASH2;
     if (isPathSeparator4(code)) {
       if (lastSlash === i - 1 || dots === 1) {
       } else if (lastSlash !== i - 1 && dots === 2) {
@@ -1363,17 +1254,13 @@ function normalizeString2(path7, allowAboveRoot, separator, isPathSeparator4) {
           }
         }
         if (allowAboveRoot) {
-          if (res.length > 0)
-            res += `${separator}..`;
-          else
-            res = "..";
+          if (res.length > 0) res += `${separator}..`;
+          else res = "..";
           lastSegmentLength = 2;
         }
       } else {
-        if (res.length > 0)
-          res += separator + path7.slice(lastSlash + 1, i);
-        else
-          res = path7.slice(lastSlash + 1, i);
+        if (res.length > 0) res += separator + path7.slice(lastSlash + 1, i);
+        else res = path7.slice(lastSlash + 1, i);
         lastSegmentLength = i - lastSlash - 1;
       }
       lastSlash = i;
@@ -1389,10 +1276,8 @@ function normalizeString2(path7, allowAboveRoot, separator, isPathSeparator4) {
 function _format2(sep9, pathObject) {
   const dir = pathObject.dir || pathObject.root;
   const base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-  if (!dir)
-    return base;
-  if (dir === pathObject.root)
-    return dir + base;
+  if (!dir) return base;
+  if (dir === pathObject.root) return dir + base;
   return dir + sep9 + base;
 }
 var WHITESPACE_ENCODINGS2 = {
@@ -1450,8 +1335,7 @@ function resolve4(...pathSegments) {
     }
     assertPath2(path7);
     const len = path7.length;
-    if (len === 0)
-      continue;
+    if (len === 0) continue;
     let rootEnd = 0;
     let device = "";
     let isAbsolute9 = false;
@@ -1463,21 +1347,18 @@ function resolve4(...pathSegments) {
           let j = 2;
           let last = j;
           for (; j < len; ++j) {
-            if (isPathSeparator2(path7.charCodeAt(j)))
-              break;
+            if (isPathSeparator2(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             const firstPart = path7.slice(last, j);
             last = j;
             for (; j < len; ++j) {
-              if (!isPathSeparator2(path7.charCodeAt(j)))
-                break;
+              if (!isPathSeparator2(path7.charCodeAt(j))) break;
             }
             if (j < len && j !== last) {
               last = j;
               for (; j < len; ++j) {
-                if (isPathSeparator2(path7.charCodeAt(j)))
-                  break;
+                if (isPathSeparator2(path7.charCodeAt(j))) break;
               }
               if (j === len) {
                 device = `\\\\${firstPart}\\${path7.slice(last)}`;
@@ -1517,8 +1398,7 @@ function resolve4(...pathSegments) {
       resolvedTail = `${path7.slice(rootEnd)}\\${resolvedTail}`;
       resolvedAbsolute = isAbsolute9;
     }
-    if (resolvedAbsolute && resolvedDevice.length > 0)
-      break;
+    if (resolvedAbsolute && resolvedDevice.length > 0) break;
   }
   resolvedTail = normalizeString2(
     resolvedTail,
@@ -1531,8 +1411,7 @@ function resolve4(...pathSegments) {
 function normalize5(path7) {
   assertPath2(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = 0;
   let device;
   let isAbsolute9 = false;
@@ -1544,21 +1423,18 @@ function normalize5(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator2(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator2(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           const firstPart = path7.slice(last, j);
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator2(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator2(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator2(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator2(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return `\\\\${firstPart}\\${path7.slice(last)}\\`;
@@ -1597,27 +1473,22 @@ function normalize5(path7) {
   } else {
     tail = "";
   }
-  if (tail.length === 0 && !isAbsolute9)
-    tail = ".";
+  if (tail.length === 0 && !isAbsolute9) tail = ".";
   if (tail.length > 0 && isPathSeparator2(path7.charCodeAt(len - 1))) {
     tail += "\\";
   }
   if (device === void 0) {
     if (isAbsolute9) {
-      if (tail.length > 0)
-        return `\\${tail}`;
-      else
-        return "\\";
+      if (tail.length > 0) return `\\${tail}`;
+      else return "\\";
     } else if (tail.length > 0) {
       return tail;
     } else {
       return "";
     }
   } else if (isAbsolute9) {
-    if (tail.length > 0)
-      return `${device}\\${tail}`;
-    else
-      return `${device}\\`;
+    if (tail.length > 0) return `${device}\\${tail}`;
+    else return `${device}\\`;
   } else if (tail.length > 0) {
     return device + tail;
   } else {
@@ -1627,37 +1498,31 @@ function normalize5(path7) {
 function isAbsolute4(path7) {
   assertPath2(path7);
   const len = path7.length;
-  if (len === 0)
-    return false;
+  if (len === 0) return false;
   const code = path7.charCodeAt(0);
   if (isPathSeparator2(code)) {
     return true;
   } else if (isWindowsDeviceRoot2(code)) {
     if (len > 2 && path7.charCodeAt(1) === CHAR_COLON2) {
-      if (isPathSeparator2(path7.charCodeAt(2)))
-        return true;
+      if (isPathSeparator2(path7.charCodeAt(2))) return true;
     }
   }
   return false;
 }
 function join5(...paths) {
   const pathsCount = paths.length;
-  if (pathsCount === 0)
-    return ".";
+  if (pathsCount === 0) return ".";
   let joined;
   let firstPart = null;
   for (let i = 0; i < pathsCount; ++i) {
     const path7 = paths[i];
     assertPath2(path7);
     if (path7.length > 0) {
-      if (joined === void 0)
-        joined = firstPart = path7;
-      else
-        joined += `\\${path7}`;
+      if (joined === void 0) joined = firstPart = path7;
+      else joined += `\\${path7}`;
     }
   }
-  if (joined === void 0)
-    return ".";
+  if (joined === void 0) return ".";
   let needsReplace = true;
   let slashCount = 0;
   assert2(firstPart != null);
@@ -1668,8 +1533,7 @@ function join5(...paths) {
       if (isPathSeparator2(firstPart.charCodeAt(1))) {
         ++slashCount;
         if (firstLen > 2) {
-          if (isPathSeparator2(firstPart.charCodeAt(2)))
-            ++slashCount;
+          if (isPathSeparator2(firstPart.charCodeAt(2))) ++slashCount;
           else {
             needsReplace = false;
           }
@@ -1679,47 +1543,38 @@ function join5(...paths) {
   }
   if (needsReplace) {
     for (; slashCount < joined.length; ++slashCount) {
-      if (!isPathSeparator2(joined.charCodeAt(slashCount)))
-        break;
+      if (!isPathSeparator2(joined.charCodeAt(slashCount))) break;
     }
-    if (slashCount >= 2)
-      joined = `\\${joined.slice(slashCount)}`;
+    if (slashCount >= 2) joined = `\\${joined.slice(slashCount)}`;
   }
   return normalize5(joined);
 }
 function relative4(from, to) {
   assertPath2(from);
   assertPath2(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   const fromOrig = resolve4(from);
   const toOrig = resolve4(to);
-  if (fromOrig === toOrig)
-    return "";
+  if (fromOrig === toOrig) return "";
   from = fromOrig.toLowerCase();
   to = toOrig.toLowerCase();
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 0;
   let fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH2)
-      break;
+    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH2) break;
   }
   for (; fromEnd - 1 > fromStart; --fromEnd) {
-    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH2)
-      break;
+    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH2) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 0;
   let toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH2)
-      break;
+    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH2) break;
   }
   for (; toEnd - 1 > toStart; --toEnd) {
-    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH2)
-      break;
+    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH2) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -1745,39 +1600,31 @@ function relative4(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (fromCode === CHAR_BACKWARD_SLASH2)
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (fromCode === CHAR_BACKWARD_SLASH2) lastCommonSep = i;
   }
   if (i !== length && lastCommonSep === -1) {
     return toOrig;
   }
   let out = "";
-  if (lastCommonSep === -1)
-    lastCommonSep = 0;
+  if (lastCommonSep === -1) lastCommonSep = 0;
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || from.charCodeAt(i) === CHAR_BACKWARD_SLASH2) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "\\..";
+      if (out.length === 0) out += "..";
+      else out += "\\..";
     }
   }
   if (out.length > 0) {
     return out + toOrig.slice(toStart + lastCommonSep, toEnd);
   } else {
     toStart += lastCommonSep;
-    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH2)
-      ++toStart;
+    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH2) ++toStart;
     return toOrig.slice(toStart, toEnd);
   }
 }
 function toNamespacedPath4(path7) {
-  if (typeof path7 !== "string")
-    return path7;
-  if (path7.length === 0)
-    return "";
+  if (typeof path7 !== "string") return path7;
+  if (path7.length === 0) return "";
   const resolvedPath = resolve4(path7);
   if (resolvedPath.length >= 3) {
     if (resolvedPath.charCodeAt(0) === CHAR_BACKWARD_SLASH2) {
@@ -1798,8 +1645,7 @@ function toNamespacedPath4(path7) {
 function dirname4(path7) {
   assertPath2(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = -1;
   let end = -1;
   let matchedSlash = true;
@@ -1812,20 +1658,17 @@ function dirname4(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator2(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator2(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator2(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator2(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator2(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator2(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return path7;
@@ -1840,8 +1683,7 @@ function dirname4(path7) {
       if (path7.charCodeAt(1) === CHAR_COLON2) {
         rootEnd = offset = 2;
         if (len > 2) {
-          if (isPathSeparator2(path7.charCodeAt(2)))
-            rootEnd = offset = 3;
+          if (isPathSeparator2(path7.charCodeAt(2))) rootEnd = offset = 3;
         }
       }
     }
@@ -1859,10 +1701,8 @@ function dirname4(path7) {
     }
   }
   if (end === -1) {
-    if (rootEnd === -1)
-      return ".";
-    else
-      end = rootEnd;
+    if (rootEnd === -1) return ".";
+    else end = rootEnd;
   }
   return path7.slice(0, end);
 }
@@ -1878,13 +1718,11 @@ function basename4(path7, ext = "") {
   if (path7.length >= 2) {
     const drive = path7.charCodeAt(0);
     if (isWindowsDeviceRoot2(drive)) {
-      if (path7.charCodeAt(1) === CHAR_COLON2)
-        start = 2;
+      if (path7.charCodeAt(1) === CHAR_COLON2) start = 2;
     }
   }
   if (ext !== void 0 && ext.length > 0 && ext.length <= path7.length) {
-    if (ext.length === path7.length && ext === path7)
-      return "";
+    if (ext.length === path7.length && ext === path7) return "";
     let extIdx = ext.length - 1;
     let firstNonSlashEnd = -1;
     for (i = path7.length - 1; i >= start; --i) {
@@ -1911,10 +1749,8 @@ function basename4(path7, ext = "") {
         }
       }
     }
-    if (start === end)
-      end = firstNonSlashEnd;
-    else if (end === -1)
-      end = path7.length;
+    if (start === end) end = firstNonSlashEnd;
+    else if (end === -1) end = path7.length;
     return path7.slice(start, end);
   } else {
     for (i = path7.length - 1; i >= start; --i) {
@@ -1928,8 +1764,7 @@ function basename4(path7, ext = "") {
         end = i + 1;
       }
     }
-    if (end === -1)
-      return "";
+    if (end === -1) return "";
     return path7.slice(start, end);
   }
 }
@@ -1958,10 +1793,8 @@ function extname4(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT2) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -1985,8 +1818,7 @@ function parse4(path7) {
   assertPath2(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
   const len = path7.length;
-  if (len === 0)
-    return ret;
+  if (len === 0) return ret;
   let rootEnd = 0;
   let code = path7.charCodeAt(0);
   if (len > 1) {
@@ -1996,20 +1828,17 @@ function parse4(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator2(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator2(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator2(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator2(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator2(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator2(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               rootEnd = j;
@@ -2040,8 +1869,7 @@ function parse4(path7) {
     ret.root = ret.dir = path7;
     return ret;
   }
-  if (rootEnd > 0)
-    ret.root = path7.slice(0, rootEnd);
+  if (rootEnd > 0) ret.root = path7.slice(0, rootEnd);
   let startDot = -1;
   let startPart = rootEnd;
   let end = -1;
@@ -2062,10 +1890,8 @@ function parse4(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT2) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -2083,8 +1909,7 @@ function parse4(path7) {
   }
   if (startPart > 0 && startPart !== rootEnd) {
     ret.dir = path7.slice(0, startPart - 1);
-  } else
-    ret.dir = ret.root;
+  } else ret.dir = ret.root;
   return ret;
 }
 function fromFileUrl4(url) {
@@ -2144,8 +1969,7 @@ function resolve5(...pathSegments) {
   let resolvedAbsolute = false;
   for (let i = pathSegments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
     let path7;
-    if (i >= 0)
-      path7 = pathSegments[i];
+    if (i >= 0) path7 = pathSegments[i];
     else {
       const { Deno: Deno4 } = globalThis;
       if (typeof Deno4?.cwd !== "function") {
@@ -2167,28 +1991,20 @@ function resolve5(...pathSegments) {
     isPosixPathSeparator2
   );
   if (resolvedAbsolute) {
-    if (resolvedPath.length > 0)
-      return `/${resolvedPath}`;
-    else
-      return "/";
-  } else if (resolvedPath.length > 0)
-    return resolvedPath;
-  else
-    return ".";
+    if (resolvedPath.length > 0) return `/${resolvedPath}`;
+    else return "/";
+  } else if (resolvedPath.length > 0) return resolvedPath;
+  else return ".";
 }
 function normalize6(path7) {
   assertPath2(path7);
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   const isAbsolute9 = path7.charCodeAt(0) === CHAR_FORWARD_SLASH2;
   const trailingSeparator = path7.charCodeAt(path7.length - 1) === CHAR_FORWARD_SLASH2;
   path7 = normalizeString2(path7, !isAbsolute9, "/", isPosixPathSeparator2);
-  if (path7.length === 0 && !isAbsolute9)
-    path7 = ".";
-  if (path7.length > 0 && trailingSeparator)
-    path7 += "/";
-  if (isAbsolute9)
-    return `/${path7}`;
+  if (path7.length === 0 && !isAbsolute9) path7 = ".";
+  if (path7.length > 0 && trailingSeparator) path7 += "/";
+  if (isAbsolute9) return `/${path7}`;
   return path7;
 }
 function isAbsolute5(path7) {
@@ -2196,44 +2012,36 @@ function isAbsolute5(path7) {
   return path7.length > 0 && path7.charCodeAt(0) === CHAR_FORWARD_SLASH2;
 }
 function join6(...paths) {
-  if (paths.length === 0)
-    return ".";
+  if (paths.length === 0) return ".";
   let joined;
   for (let i = 0, len = paths.length; i < len; ++i) {
     const path7 = paths[i];
     assertPath2(path7);
     if (path7.length > 0) {
-      if (!joined)
-        joined = path7;
-      else
-        joined += `/${path7}`;
+      if (!joined) joined = path7;
+      else joined += `/${path7}`;
     }
   }
-  if (!joined)
-    return ".";
+  if (!joined) return ".";
   return normalize6(joined);
 }
 function relative5(from, to) {
   assertPath2(from);
   assertPath2(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   from = resolve5(from);
   to = resolve5(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 1;
   const fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (from.charCodeAt(fromStart) !== CHAR_FORWARD_SLASH2)
-      break;
+    if (from.charCodeAt(fromStart) !== CHAR_FORWARD_SLASH2) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 1;
   const toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (to.charCodeAt(toStart) !== CHAR_FORWARD_SLASH2)
-      break;
+    if (to.charCodeAt(toStart) !== CHAR_FORWARD_SLASH2) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -2258,26 +2066,20 @@ function relative5(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (fromCode === CHAR_FORWARD_SLASH2)
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (fromCode === CHAR_FORWARD_SLASH2) lastCommonSep = i;
   }
   let out = "";
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || from.charCodeAt(i) === CHAR_FORWARD_SLASH2) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "/..";
+      if (out.length === 0) out += "..";
+      else out += "/..";
     }
   }
-  if (out.length > 0)
-    return out + to.slice(toStart + lastCommonSep);
+  if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
   else {
     toStart += lastCommonSep;
-    if (to.charCodeAt(toStart) === CHAR_FORWARD_SLASH2)
-      ++toStart;
+    if (to.charCodeAt(toStart) === CHAR_FORWARD_SLASH2) ++toStart;
     return to.slice(toStart);
   }
 }
@@ -2286,8 +2088,7 @@ function toNamespacedPath5(path7) {
 }
 function dirname5(path7) {
   assertPath2(path7);
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   const hasRoot = path7.charCodeAt(0) === CHAR_FORWARD_SLASH2;
   let end = -1;
   let matchedSlash = true;
@@ -2301,10 +2102,8 @@ function dirname5(path7) {
       matchedSlash = false;
     }
   }
-  if (end === -1)
-    return hasRoot ? "/" : ".";
-  if (hasRoot && end === 1)
-    return "//";
+  if (end === -1) return hasRoot ? "/" : ".";
+  if (hasRoot && end === 1) return "//";
   return path7.slice(0, end);
 }
 function basename5(path7, ext = "") {
@@ -2317,8 +2116,7 @@ function basename5(path7, ext = "") {
   let matchedSlash = true;
   let i;
   if (ext !== void 0 && ext.length > 0 && ext.length <= path7.length) {
-    if (ext.length === path7.length && ext === path7)
-      return "";
+    if (ext.length === path7.length && ext === path7) return "";
     let extIdx = ext.length - 1;
     let firstNonSlashEnd = -1;
     for (i = path7.length - 1; i >= 0; --i) {
@@ -2345,10 +2143,8 @@ function basename5(path7, ext = "") {
         }
       }
     }
-    if (start === end)
-      end = firstNonSlashEnd;
-    else if (end === -1)
-      end = path7.length;
+    if (start === end) end = firstNonSlashEnd;
+    else if (end === -1) end = path7.length;
     return path7.slice(start, end);
   } else {
     for (i = path7.length - 1; i >= 0; --i) {
@@ -2362,8 +2158,7 @@ function basename5(path7, ext = "") {
         end = i + 1;
       }
     }
-    if (end === -1)
-      return "";
+    if (end === -1) return "";
     return path7.slice(start, end);
   }
 }
@@ -2388,10 +2183,8 @@ function extname5(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT2) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -2414,8 +2207,7 @@ function format5(pathObject) {
 function parse5(path7) {
   assertPath2(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
-  if (path7.length === 0)
-    return ret;
+  if (path7.length === 0) return ret;
   const isAbsolute9 = path7.charCodeAt(0) === CHAR_FORWARD_SLASH2;
   let start;
   if (isAbsolute9) {
@@ -2444,10 +2236,8 @@ function parse5(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT2) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -2472,10 +2262,8 @@ function parse5(path7) {
     }
     ret.ext = path7.slice(startDot, end);
   }
-  if (startPart > 0)
-    ret.dir = path7.slice(0, startPart - 1);
-  else if (isAbsolute9)
-    ret.dir = "/";
+  if (startPart > 0) ret.dir = path7.slice(0, startPart - 1);
+  else if (isAbsolute9) ret.dir = "/";
   return ret;
 }
 function fromFileUrl5(url) {
@@ -3070,7 +2858,7 @@ var allKeyDescriptions = function(value, options = { includingBuiltin: false }) 
 var objectPrototype = Object.getPrototypeOf({});
 
 // https://deno.land/x/good@1.6.0.1/iterable.js
-var emptyIterator = /* @__PURE__ */ function* () {
+var emptyIterator = function* () {
 }();
 var makeIterable = (object) => {
   if (object == null) {
@@ -3472,12 +3260,9 @@ function normalizeString3(path7, allowAboveRoot, separator, isPathSeparator4) {
   let dots = 0;
   let code;
   for (let i = 0, len = path7.length; i <= len; ++i) {
-    if (i < len)
-      code = path7.charCodeAt(i);
-    else if (isPathSeparator4(code))
-      break;
-    else
-      code = CHAR_FORWARD_SLASH3;
+    if (i < len) code = path7.charCodeAt(i);
+    else if (isPathSeparator4(code)) break;
+    else code = CHAR_FORWARD_SLASH3;
     if (isPathSeparator4(code)) {
       if (lastSlash === i - 1 || dots === 1) {
       } else if (lastSlash !== i - 1 && dots === 2) {
@@ -3503,17 +3288,13 @@ function normalizeString3(path7, allowAboveRoot, separator, isPathSeparator4) {
           }
         }
         if (allowAboveRoot) {
-          if (res.length > 0)
-            res += `${separator}..`;
-          else
-            res = "..";
+          if (res.length > 0) res += `${separator}..`;
+          else res = "..";
           lastSegmentLength = 2;
         }
       } else {
-        if (res.length > 0)
-          res += separator + path7.slice(lastSlash + 1, i);
-        else
-          res = path7.slice(lastSlash + 1, i);
+        if (res.length > 0) res += separator + path7.slice(lastSlash + 1, i);
+        else res = path7.slice(lastSlash + 1, i);
         lastSegmentLength = i - lastSlash - 1;
       }
       lastSlash = i;
@@ -3529,12 +3310,9 @@ function normalizeString3(path7, allowAboveRoot, separator, isPathSeparator4) {
 function _format3(sep9, pathObject) {
   const dir = pathObject.dir || pathObject.root;
   const base = pathObject.base || (pathObject.name || "") + (pathObject.ext || "");
-  if (!dir)
-    return base;
-  if (base === sep9)
-    return dir;
-  if (dir === pathObject.root)
-    return dir + base;
+  if (!dir) return base;
+  if (base === sep9) return dir;
+  if (dir === pathObject.root) return dir + base;
   return dir + sep9 + base;
 }
 var WHITESPACE_ENCODINGS3 = {
@@ -3634,8 +3412,7 @@ function resolve7(...pathSegments) {
     }
     assertPath3(path7);
     const len = path7.length;
-    if (len === 0)
-      continue;
+    if (len === 0) continue;
     let rootEnd = 0;
     let device = "";
     let isAbsolute9 = false;
@@ -3647,21 +3424,18 @@ function resolve7(...pathSegments) {
           let j = 2;
           let last = j;
           for (; j < len; ++j) {
-            if (isPathSeparator3(path7.charCodeAt(j)))
-              break;
+            if (isPathSeparator3(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             const firstPart = path7.slice(last, j);
             last = j;
             for (; j < len; ++j) {
-              if (!isPathSeparator3(path7.charCodeAt(j)))
-                break;
+              if (!isPathSeparator3(path7.charCodeAt(j))) break;
             }
             if (j < len && j !== last) {
               last = j;
               for (; j < len; ++j) {
-                if (isPathSeparator3(path7.charCodeAt(j)))
-                  break;
+                if (isPathSeparator3(path7.charCodeAt(j))) break;
               }
               if (j === len) {
                 device = `\\\\${firstPart}\\${path7.slice(last)}`;
@@ -3701,8 +3475,7 @@ function resolve7(...pathSegments) {
       resolvedTail = `${path7.slice(rootEnd)}\\${resolvedTail}`;
       resolvedAbsolute = isAbsolute9;
     }
-    if (resolvedAbsolute && resolvedDevice.length > 0)
-      break;
+    if (resolvedAbsolute && resolvedDevice.length > 0) break;
   }
   resolvedTail = normalizeString3(
     resolvedTail,
@@ -3715,8 +3488,7 @@ function resolve7(...pathSegments) {
 function normalize9(path7) {
   assertPath3(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = 0;
   let device;
   let isAbsolute9 = false;
@@ -3728,21 +3500,18 @@ function normalize9(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator3(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator3(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           const firstPart = path7.slice(last, j);
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator3(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator3(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator3(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator3(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return `\\\\${firstPart}\\${path7.slice(last)}\\`;
@@ -3781,27 +3550,22 @@ function normalize9(path7) {
   } else {
     tail = "";
   }
-  if (tail.length === 0 && !isAbsolute9)
-    tail = ".";
+  if (tail.length === 0 && !isAbsolute9) tail = ".";
   if (tail.length > 0 && isPathSeparator3(path7.charCodeAt(len - 1))) {
     tail += "\\";
   }
   if (device === void 0) {
     if (isAbsolute9) {
-      if (tail.length > 0)
-        return `\\${tail}`;
-      else
-        return "\\";
+      if (tail.length > 0) return `\\${tail}`;
+      else return "\\";
     } else if (tail.length > 0) {
       return tail;
     } else {
       return "";
     }
   } else if (isAbsolute9) {
-    if (tail.length > 0)
-      return `${device}\\${tail}`;
-    else
-      return `${device}\\`;
+    if (tail.length > 0) return `${device}\\${tail}`;
+    else return `${device}\\`;
   } else if (tail.length > 0) {
     return device + tail;
   } else {
@@ -3811,37 +3575,31 @@ function normalize9(path7) {
 function isAbsolute7(path7) {
   assertPath3(path7);
   const len = path7.length;
-  if (len === 0)
-    return false;
+  if (len === 0) return false;
   const code = path7.charCodeAt(0);
   if (isPathSeparator3(code)) {
     return true;
   } else if (isWindowsDeviceRoot3(code)) {
     if (len > 2 && path7.charCodeAt(1) === CHAR_COLON3) {
-      if (isPathSeparator3(path7.charCodeAt(2)))
-        return true;
+      if (isPathSeparator3(path7.charCodeAt(2))) return true;
     }
   }
   return false;
 }
 function join9(...paths) {
   const pathsCount = paths.length;
-  if (pathsCount === 0)
-    return ".";
+  if (pathsCount === 0) return ".";
   let joined;
   let firstPart = null;
   for (let i = 0; i < pathsCount; ++i) {
     const path7 = paths[i];
     assertPath3(path7);
     if (path7.length > 0) {
-      if (joined === void 0)
-        joined = firstPart = path7;
-      else
-        joined += `\\${path7}`;
+      if (joined === void 0) joined = firstPart = path7;
+      else joined += `\\${path7}`;
     }
   }
-  if (joined === void 0)
-    return ".";
+  if (joined === void 0) return ".";
   let needsReplace = true;
   let slashCount = 0;
   assert3(firstPart != null);
@@ -3852,8 +3610,7 @@ function join9(...paths) {
       if (isPathSeparator3(firstPart.charCodeAt(1))) {
         ++slashCount;
         if (firstLen > 2) {
-          if (isPathSeparator3(firstPart.charCodeAt(2)))
-            ++slashCount;
+          if (isPathSeparator3(firstPart.charCodeAt(2))) ++slashCount;
           else {
             needsReplace = false;
           }
@@ -3863,47 +3620,38 @@ function join9(...paths) {
   }
   if (needsReplace) {
     for (; slashCount < joined.length; ++slashCount) {
-      if (!isPathSeparator3(joined.charCodeAt(slashCount)))
-        break;
+      if (!isPathSeparator3(joined.charCodeAt(slashCount))) break;
     }
-    if (slashCount >= 2)
-      joined = `\\${joined.slice(slashCount)}`;
+    if (slashCount >= 2) joined = `\\${joined.slice(slashCount)}`;
   }
   return normalize9(joined);
 }
 function relative7(from, to) {
   assertPath3(from);
   assertPath3(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   const fromOrig = resolve7(from);
   const toOrig = resolve7(to);
-  if (fromOrig === toOrig)
-    return "";
+  if (fromOrig === toOrig) return "";
   from = fromOrig.toLowerCase();
   to = toOrig.toLowerCase();
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 0;
   let fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH3)
-      break;
+    if (from.charCodeAt(fromStart) !== CHAR_BACKWARD_SLASH3) break;
   }
   for (; fromEnd - 1 > fromStart; --fromEnd) {
-    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH3)
-      break;
+    if (from.charCodeAt(fromEnd - 1) !== CHAR_BACKWARD_SLASH3) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 0;
   let toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH3)
-      break;
+    if (to.charCodeAt(toStart) !== CHAR_BACKWARD_SLASH3) break;
   }
   for (; toEnd - 1 > toStart; --toEnd) {
-    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH3)
-      break;
+    if (to.charCodeAt(toEnd - 1) !== CHAR_BACKWARD_SLASH3) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -3929,39 +3677,31 @@ function relative7(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (fromCode === CHAR_BACKWARD_SLASH3)
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (fromCode === CHAR_BACKWARD_SLASH3) lastCommonSep = i;
   }
   if (i !== length && lastCommonSep === -1) {
     return toOrig;
   }
   let out = "";
-  if (lastCommonSep === -1)
-    lastCommonSep = 0;
+  if (lastCommonSep === -1) lastCommonSep = 0;
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || from.charCodeAt(i) === CHAR_BACKWARD_SLASH3) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "\\..";
+      if (out.length === 0) out += "..";
+      else out += "\\..";
     }
   }
   if (out.length > 0) {
     return out + toOrig.slice(toStart + lastCommonSep, toEnd);
   } else {
     toStart += lastCommonSep;
-    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH3)
-      ++toStart;
+    if (toOrig.charCodeAt(toStart) === CHAR_BACKWARD_SLASH3) ++toStart;
     return toOrig.slice(toStart, toEnd);
   }
 }
 function toNamespacedPath7(path7) {
-  if (typeof path7 !== "string")
-    return path7;
-  if (path7.length === 0)
-    return "";
+  if (typeof path7 !== "string") return path7;
+  if (path7.length === 0) return "";
   const resolvedPath = resolve7(path7);
   if (resolvedPath.length >= 3) {
     if (resolvedPath.charCodeAt(0) === CHAR_BACKWARD_SLASH3) {
@@ -3982,8 +3722,7 @@ function toNamespacedPath7(path7) {
 function dirname7(path7) {
   assertPath3(path7);
   const len = path7.length;
-  if (len === 0)
-    return ".";
+  if (len === 0) return ".";
   let rootEnd = -1;
   let end = -1;
   let matchedSlash = true;
@@ -3996,20 +3735,17 @@ function dirname7(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator3(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator3(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator3(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator3(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator3(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator3(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               return path7;
@@ -4024,8 +3760,7 @@ function dirname7(path7) {
       if (path7.charCodeAt(1) === CHAR_COLON3) {
         rootEnd = offset = 2;
         if (len > 2) {
-          if (isPathSeparator3(path7.charCodeAt(2)))
-            rootEnd = offset = 3;
+          if (isPathSeparator3(path7.charCodeAt(2))) rootEnd = offset = 3;
         }
       }
     }
@@ -4043,17 +3778,14 @@ function dirname7(path7) {
     }
   }
   if (end === -1) {
-    if (rootEnd === -1)
-      return ".";
-    else
-      end = rootEnd;
+    if (rootEnd === -1) return ".";
+    else end = rootEnd;
   }
   return stripTrailingSeparators(path7.slice(0, end), isPosixPathSeparator3);
 }
 function basename7(path7, suffix = "") {
   assertPath3(path7);
-  if (path7.length === 0)
-    return path7;
+  if (path7.length === 0) return path7;
   if (typeof suffix !== "string") {
     throw new TypeError(
       `Suffix must be a string. Received ${JSON.stringify(suffix)}`
@@ -4063,8 +3795,7 @@ function basename7(path7, suffix = "") {
   if (path7.length >= 2) {
     const drive = path7.charCodeAt(0);
     if (isWindowsDeviceRoot3(drive)) {
-      if (path7.charCodeAt(1) === CHAR_COLON3)
-        start = 2;
+      if (path7.charCodeAt(1) === CHAR_COLON3) start = 2;
     }
   }
   const lastSegment = lastPathSegment(path7, isPathSeparator3, start);
@@ -4096,10 +3827,8 @@ function extname7(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT3) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -4123,8 +3852,7 @@ function parse7(path7) {
   assertPath3(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
   const len = path7.length;
-  if (len === 0)
-    return ret;
+  if (len === 0) return ret;
   let rootEnd = 0;
   let code = path7.charCodeAt(0);
   if (len > 1) {
@@ -4134,20 +3862,17 @@ function parse7(path7) {
         let j = 2;
         let last = j;
         for (; j < len; ++j) {
-          if (isPathSeparator3(path7.charCodeAt(j)))
-            break;
+          if (isPathSeparator3(path7.charCodeAt(j))) break;
         }
         if (j < len && j !== last) {
           last = j;
           for (; j < len; ++j) {
-            if (!isPathSeparator3(path7.charCodeAt(j)))
-              break;
+            if (!isPathSeparator3(path7.charCodeAt(j))) break;
           }
           if (j < len && j !== last) {
             last = j;
             for (; j < len; ++j) {
-              if (isPathSeparator3(path7.charCodeAt(j)))
-                break;
+              if (isPathSeparator3(path7.charCodeAt(j))) break;
             }
             if (j === len) {
               rootEnd = j;
@@ -4180,8 +3905,7 @@ function parse7(path7) {
     ret.base = "\\";
     return ret;
   }
-  if (rootEnd > 0)
-    ret.root = path7.slice(0, rootEnd);
+  if (rootEnd > 0) ret.root = path7.slice(0, rootEnd);
   let startDot = -1;
   let startPart = rootEnd;
   let end = -1;
@@ -4202,10 +3926,8 @@ function parse7(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT3) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -4224,8 +3946,7 @@ function parse7(path7) {
   ret.base = ret.base || "\\";
   if (startPart > 0 && startPart !== rootEnd) {
     ret.dir = path7.slice(0, startPart - 1);
-  } else
-    ret.dir = ret.root;
+  } else ret.dir = ret.root;
   return ret;
 }
 function fromFileUrl7(url) {
@@ -4285,8 +4006,7 @@ function resolve8(...pathSegments) {
   let resolvedAbsolute = false;
   for (let i = pathSegments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
     let path7;
-    if (i >= 0)
-      path7 = pathSegments[i];
+    if (i >= 0) path7 = pathSegments[i];
     else {
       const { Deno: Deno4 } = globalThis;
       if (typeof Deno4?.cwd !== "function") {
@@ -4308,30 +4028,22 @@ function resolve8(...pathSegments) {
     isPosixPathSeparator3
   );
   if (resolvedAbsolute) {
-    if (resolvedPath.length > 0)
-      return `/${resolvedPath}`;
-    else
-      return "/";
-  } else if (resolvedPath.length > 0)
-    return resolvedPath;
-  else
-    return ".";
+    if (resolvedPath.length > 0) return `/${resolvedPath}`;
+    else return "/";
+  } else if (resolvedPath.length > 0) return resolvedPath;
+  else return ".";
 }
 function normalize10(path7) {
   assertPath3(path7);
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   const isAbsolute9 = isPosixPathSeparator3(path7.charCodeAt(0));
   const trailingSeparator = isPosixPathSeparator3(
     path7.charCodeAt(path7.length - 1)
   );
   path7 = normalizeString3(path7, !isAbsolute9, "/", isPosixPathSeparator3);
-  if (path7.length === 0 && !isAbsolute9)
-    path7 = ".";
-  if (path7.length > 0 && trailingSeparator)
-    path7 += "/";
-  if (isAbsolute9)
-    return `/${path7}`;
+  if (path7.length === 0 && !isAbsolute9) path7 = ".";
+  if (path7.length > 0 && trailingSeparator) path7 += "/";
+  if (isAbsolute9) return `/${path7}`;
   return path7;
 }
 function isAbsolute8(path7) {
@@ -4339,44 +4051,36 @@ function isAbsolute8(path7) {
   return path7.length > 0 && isPosixPathSeparator3(path7.charCodeAt(0));
 }
 function join10(...paths) {
-  if (paths.length === 0)
-    return ".";
+  if (paths.length === 0) return ".";
   let joined;
   for (let i = 0, len = paths.length; i < len; ++i) {
     const path7 = paths[i];
     assertPath3(path7);
     if (path7.length > 0) {
-      if (!joined)
-        joined = path7;
-      else
-        joined += `/${path7}`;
+      if (!joined) joined = path7;
+      else joined += `/${path7}`;
     }
   }
-  if (!joined)
-    return ".";
+  if (!joined) return ".";
   return normalize10(joined);
 }
 function relative8(from, to) {
   assertPath3(from);
   assertPath3(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   from = resolve8(from);
   to = resolve8(to);
-  if (from === to)
-    return "";
+  if (from === to) return "";
   let fromStart = 1;
   const fromEnd = from.length;
   for (; fromStart < fromEnd; ++fromStart) {
-    if (!isPosixPathSeparator3(from.charCodeAt(fromStart)))
-      break;
+    if (!isPosixPathSeparator3(from.charCodeAt(fromStart))) break;
   }
   const fromLen = fromEnd - fromStart;
   let toStart = 1;
   const toEnd = to.length;
   for (; toStart < toEnd; ++toStart) {
-    if (!isPosixPathSeparator3(to.charCodeAt(toStart)))
-      break;
+    if (!isPosixPathSeparator3(to.charCodeAt(toStart))) break;
   }
   const toLen = toEnd - toStart;
   const length = fromLen < toLen ? fromLen : toLen;
@@ -4401,26 +4105,20 @@ function relative8(from, to) {
     }
     const fromCode = from.charCodeAt(fromStart + i);
     const toCode = to.charCodeAt(toStart + i);
-    if (fromCode !== toCode)
-      break;
-    else if (isPosixPathSeparator3(fromCode))
-      lastCommonSep = i;
+    if (fromCode !== toCode) break;
+    else if (isPosixPathSeparator3(fromCode)) lastCommonSep = i;
   }
   let out = "";
   for (i = fromStart + lastCommonSep + 1; i <= fromEnd; ++i) {
     if (i === fromEnd || isPosixPathSeparator3(from.charCodeAt(i))) {
-      if (out.length === 0)
-        out += "..";
-      else
-        out += "/..";
+      if (out.length === 0) out += "..";
+      else out += "/..";
     }
   }
-  if (out.length > 0)
-    return out + to.slice(toStart + lastCommonSep);
+  if (out.length > 0) return out + to.slice(toStart + lastCommonSep);
   else {
     toStart += lastCommonSep;
-    if (isPosixPathSeparator3(to.charCodeAt(toStart)))
-      ++toStart;
+    if (isPosixPathSeparator3(to.charCodeAt(toStart))) ++toStart;
     return to.slice(toStart);
   }
 }
@@ -4428,8 +4126,7 @@ function toNamespacedPath8(path7) {
   return path7;
 }
 function dirname8(path7) {
-  if (path7.length === 0)
-    return ".";
+  if (path7.length === 0) return ".";
   let end = -1;
   let matchedNonSeparator = false;
   for (let i = path7.length - 1; i >= 1; --i) {
@@ -4452,8 +4149,7 @@ function dirname8(path7) {
 }
 function basename8(path7, suffix = "") {
   assertPath3(path7);
-  if (path7.length === 0)
-    return path7;
+  if (path7.length === 0) return path7;
   if (typeof suffix !== "string") {
     throw new TypeError(
       `Suffix must be a string. Received ${JSON.stringify(suffix)}`
@@ -4487,10 +4183,8 @@ function extname8(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT3) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -4513,8 +4207,7 @@ function format8(pathObject) {
 function parse8(path7) {
   assertPath3(path7);
   const ret = { root: "", dir: "", base: "", ext: "", name: "" };
-  if (path7.length === 0)
-    return ret;
+  if (path7.length === 0) return ret;
   const isAbsolute9 = isPosixPathSeparator3(path7.charCodeAt(0));
   let start;
   if (isAbsolute9) {
@@ -4543,10 +4236,8 @@ function parse8(path7) {
       end = i + 1;
     }
     if (code === CHAR_DOT3) {
-      if (startDot === -1)
-        startDot = i;
-      else if (preDotState !== 1)
-        preDotState = 1;
+      if (startDot === -1) startDot = i;
+      else if (preDotState !== 1) preDotState = 1;
     } else if (startDot !== -1) {
       preDotState = -1;
     }
@@ -4577,8 +4268,7 @@ function parse8(path7) {
       path7.slice(0, startPart - 1),
       isPosixPathSeparator3
     );
-  } else if (isAbsolute9)
-    ret.dir = "/";
+  } else if (isAbsolute9) ret.dir = "/";
   return ret;
 }
 function fromFileUrl8(url) {
@@ -4637,8 +4327,7 @@ function globToRegExp2(glob2, {
   const wildcard = os == "windows" ? "[^\\\\/]*" : "[^/]*";
   const escapePrefix = os == "windows" ? "`" : "\\";
   let newLength = glob2.length;
-  for (; newLength > 1 && seps.includes(glob2[newLength - 1]); newLength--)
-    ;
+  for (; newLength > 1 && seps.includes(glob2[newLength - 1]); newLength--) ;
   glob2 = glob2.slice(0, newLength);
   let regExpString = "";
   for (let j = 0; j < glob2.length; ) {
@@ -4680,34 +4369,21 @@ function globToRegExp2(glob2, {
           }
           if (glob2[k + 1] == ":" && glob2[k + 2] == "]") {
             i = k + 2;
-            if (value == "alnum")
-              segment += "\\dA-Za-z";
-            else if (value == "alpha")
-              segment += "A-Za-z";
-            else if (value == "ascii")
-              segment += "\0-\x7F";
-            else if (value == "blank")
-              segment += "	 ";
-            else if (value == "cntrl")
-              segment += "\0-\x7F";
-            else if (value == "digit")
-              segment += "\\d";
-            else if (value == "graph")
-              segment += "!-~";
-            else if (value == "lower")
-              segment += "a-z";
-            else if (value == "print")
-              segment += " -~";
+            if (value == "alnum") segment += "\\dA-Za-z";
+            else if (value == "alpha") segment += "A-Za-z";
+            else if (value == "ascii") segment += "\0-";
+            else if (value == "blank") segment += "	 ";
+            else if (value == "cntrl") segment += "\0-";
+            else if (value == "digit") segment += "\\d";
+            else if (value == "graph") segment += "!-~";
+            else if (value == "lower") segment += "a-z";
+            else if (value == "print") segment += " -~";
             else if (value == "punct") {
-              segment += `!"#$%&'()*+,\\-./:;<=>?@[\\\\\\]^_\u2018{|}~`;
-            } else if (value == "space")
-              segment += "\\s\v";
-            else if (value == "upper")
-              segment += "A-Z";
-            else if (value == "word")
-              segment += "\\w";
-            else if (value == "xdigit")
-              segment += "\\dA-Fa-f";
+              segment += `!"#$%&'()*+,\\-./:;<=>?@[\\\\\\]^_‘{|}~`;
+            } else if (value == "space") segment += "\\s\v";
+            else if (value == "upper") segment += "A-Z";
+            else if (value == "word") segment += "\\w";
+            else if (value == "xdigit") segment += "\\dA-Fa-f";
             continue;
           }
         }
@@ -4817,8 +4493,7 @@ function globToRegExp2(glob2, {
       regExpString += i < glob2.length ? sep9 : sepMaybe;
       endsWithSep = true;
     }
-    while (seps.includes(glob2[i]))
-      i++;
+    while (seps.includes(glob2[i])) i++;
     if (!(i > j)) {
       throw new Error("Assertion failure: i > j (potential infinite loop)");
     }
@@ -4932,8 +4607,7 @@ var BufReader = class _BufReader {
    */
   async read(p) {
     let rr = p.byteLength;
-    if (p.byteLength === 0)
-      return rr;
+    if (p.byteLength === 0) return rr;
     if (this.#r === this.#w) {
       if (p.byteLength >= this.#buf.byteLength) {
         const rr2 = await this.#rd.read(p);
@@ -4944,8 +4618,7 @@ var BufReader = class _BufReader {
       this.#r = 0;
       this.#w = 0;
       rr = await this.#rd.read(this.#buf);
-      if (rr === 0 || rr === null)
-        return rr;
+      if (rr === 0 || rr === null) return rr;
       assert3(rr >= 0, "negative read");
       this.#w += rr;
     }
@@ -4992,8 +4665,7 @@ var BufReader = class _BufReader {
   /** Returns the next byte [0, 255] or `null`. */
   async readByte() {
     while (this.#r === this.#w) {
-      if (this.#eof)
-        return null;
+      if (this.#eof) return null;
       await this.#fill();
     }
     const c = this.#buf[this.#r];
@@ -5014,8 +4686,7 @@ var BufReader = class _BufReader {
       throw new Error("Delimiter should be a single character");
     }
     const buffer = await this.readSlice(delim.charCodeAt(0));
-    if (buffer === null)
-      return null;
+    if (buffer === null) return null;
     return new TextDecoder().decode(buffer);
   }
   /** `readLine()` is a low-level line-reading primitive. Most callers should
@@ -7955,35 +7626,34 @@ function parseArgs({
   const numberedArgBuffer = [];
   const handleNumberedArg = (index2, each2) => {
     directArgList.push(each2);
-    parse_next_numbered_arg:
-      while (1) {
-        runningArgNumberIndex += 1;
-        if (!keyToField.has(runningArgNumberIndex)) {
-          numberWasImplicit.push(runningArgNumberIndex);
-          keyToField.set(runningArgNumberIndex, {
-            kind: [],
-            keys: [runningArgNumberIndex],
-            realIndices: [index2],
-            value: each2
-          });
-        } else {
-          const entry = keyToField.get(runningArgNumberIndex);
-          if (entry.value != unset) {
-            if (argsByNameSatisfiesNumberedArg) {
-              continue parse_next_numbered_arg;
-            } else if (allowNameRepeats) {
-              entry.value = [entry.value, each2];
-            } else {
-              throw Error(`When calling parseArgs(), two values were given for the same entry (ex: "count $thisVal 5 --min $thisVal" instead of "count --min $thisVal --max 5" or "count $thisVal 5"). The second occurance was ${argName}, and the field was ${JSON.stringify(entry.names)}`);
-            }
+    parse_next_numbered_arg: while (1) {
+      runningArgNumberIndex += 1;
+      if (!keyToField.has(runningArgNumberIndex)) {
+        numberWasImplicit.push(runningArgNumberIndex);
+        keyToField.set(runningArgNumberIndex, {
+          kind: [],
+          keys: [runningArgNumberIndex],
+          realIndices: [index2],
+          value: each2
+        });
+      } else {
+        const entry = keyToField.get(runningArgNumberIndex);
+        if (entry.value != unset) {
+          if (argsByNameSatisfiesNumberedArg) {
+            continue parse_next_numbered_arg;
+          } else if (allowNameRepeats) {
+            entry.value = [entry.value, each2];
           } else {
-            argsByNumber[runningArgNumberIndex] = each2;
-            entry.value = each2;
+            throw Error(`When calling parseArgs(), two values were given for the same entry (ex: "count $thisVal 5 --min $thisVal" instead of "count --min $thisVal --max 5" or "count $thisVal 5"). The second occurance was ${argName}, and the field was ${JSON.stringify(entry.names)}`);
           }
-          entry.realIndices.push(index2);
+        } else {
+          argsByNumber[runningArgNumberIndex] = each2;
+          entry.value = each2;
         }
-        break;
+        entry.realIndices.push(index2);
       }
+      break;
+    }
   };
   for (const eachArg of rawArgs) {
     index += 1;
@@ -8243,7 +7913,7 @@ function pathPieces(path7) {
 // main/deno-guillotine-api.js
 var specialCharPattern = /\s|\\|\"|'|`|#|\$|%|&|;|\*|\(|\)|\[|\]|\{|\}|,|<|>|\?|@|\^|\||~/;
 var shellEscape = (arg) => `'${arg.replace(/'/g, `'"'"'`)}'`;
-function enhanceScript({ filePath, jsFileContent, denoVersion: denoVersion2, additionalArgs: additionalArgs2, additionalArgsForUnix: additionalArgsForUnix2, additionalArgsForWindows: additionalArgsForWindows2, baseArgs = ["-q", "-A", "--no-lock"] }) {
+function enhanceScript({ filePath, jsFileContent, denoVersion: denoVersion2, additionalArgs: additionalArgs2, additionalArgsForUnix: additionalArgsForUnix2, additionalArgsForWindows: additionalArgsForWindows2, baseArgs = ["-q", "-A", "--no-lock", "--no-config"] }) {
   const nonStringArgs = Object.entries({ filePath, jsFileContent, denoVersion: denoVersion2 }).filter(
     ([name, arg]) => typeof arg != "string"
   ).map(
@@ -8277,9 +7947,13 @@ This is because its impossible to reliably/generically escape arguments on windo
   const ps1Path2 = `${folders.join("/")}/${itemName}.ps1`;
   const denoVersionList = denoVersion2.split(".").map((each2) => each2 - 0);
   const [major, minor, patch, ...rest] = denoVersionList;
-  const supportsNoLock = major > 0 && (minor > 27 || minor == 27 && patch > 1);
+  const supportsNoLock = major > 1 || major == 1 && (minor > 27 || minor == 27 && patch > 1);
+  const supportsNoConfig = major > 1 || (major == 1 || minor > 21);
   if (!supportsNoLock) {
     baseArgs = baseArgs.filter((each2) => each2 != "--no-lock");
+  }
+  if (!supportsNoConfig) {
+    baseArgs = baseArgs.filter((each2) => each2 != "--no-config");
   }
   const argsForUnix = [...baseArgs, ...additionalArgs2.map(shellEscape), ...additionalArgsForUnix2.map(shellEscape)].join(" ");
   const argsForWindows = [...baseArgs, ...additionalArgs2, ...additionalArgsForWindows2].join(" ");
@@ -8303,7 +7977,7 @@ echo "${denoVersion2}"; : --% ' |out-null <#'; }; version="$(dv)"; deno="$HOME/.
 }
 
 // main/version.js
-var version2 = "1.0.0.1";
+var version2 = "1.0.0.2";
 
 // main/deno-guillotine.js
 var { help: showHelp, version: showVersion } = parseArgs({
@@ -8326,11 +8000,18 @@ if (showHelp) {
             deno-guillotine --version
             deno-guillotine --file ./your_file.js
             deno-guillotine --file ./your_file.js --deno-version ${Deno.version.deno}
-            deno-guillotine --file ./your_file.js                 --add-arg '--no-npm'                 --add-arg '--unstable'
+            deno-guillotine --file ./your_file.js \\
+                --add-arg '--no-npm' \\
+                --add-arg '--unstable'
             
-            deno-guillotine --file ./your_file.js                 --add-unix-arg '--unstable-ffi'                 --add-windows-arg '--unstable-cron'
+            deno-guillotine --file ./your_file.js \\
+                --add-unix-arg '--unstable-ffi' \\
+                --add-windows-arg '--unstable-cron'
             
-            deno-guillotine --file ./your_file.js                 --no-default-args                 --add-arg '--quiet'                 --add-arg '--allow-read'
+            deno-guillotine --file ./your_file.js \\
+                --no-default-args \\
+                --add-arg '--quiet' \\
+                --add-arg '--allow-read'
         `);
   Deno.exit(0);
 }
@@ -8379,7 +8060,7 @@ var { newContents, symlinkPath, normalPath, ps1Path } = enhanceScript({
   additionalArgs: typeof additionalArgs === "string" ? [additionalArgs] : additionalArgs,
   additionalArgsForUnix: typeof additionalArgsForUnix === "string" ? [additionalArgsForUnix] : additionalArgsForUnix,
   additionalArgsForWindows: typeof additionalArgsForWindows === "string" ? [additionalArgsForWindows] : additionalArgsForWindows,
-  baseArgs: noDefaultArgs ? [] : ["-q", "-A", "--no-lock"]
+  baseArgs: noDefaultArgs ? [] : ["-q", "-A", "--no-lock", "--no-config"]
   // NOTE: no lock is given because differnt versions of deno can have different lock file formats
   //       meaning the script will fail to run with the spcified version of deno
   //       if another version of deno is installed
@@ -8441,7 +8122,7 @@ try {
     console.warn(`I was unable to make this file an executable, just fyi: ${normalPath}`);
   }
 }
-console.log(`Done! \u2705`);
+console.log(`Done! ✅`);
 console.log(`try doing:`);
 console.log(`    cd ${FileSystem.pwd}`);
 console.log(`    ./${normalPath}`.replace(/^    \.\/\.\//, "    ./"));

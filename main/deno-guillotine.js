@@ -111,7 +111,7 @@ import { version } from "./version.js"
         additionalArgs:           typeof additionalArgs           === "string" ? [ additionalArgs ] : additionalArgs,
         additionalArgsForUnix:    typeof additionalArgsForUnix    === "string" ? [ additionalArgsForUnix ] : additionalArgsForUnix,
         additionalArgsForWindows: typeof additionalArgsForWindows === "string" ? [ additionalArgsForWindows ] : additionalArgsForWindows,
-        baseArgs: noDefaultArgs ? [] : [ "-q", "-A", "--no-lock", ],
+        baseArgs: noDefaultArgs ? [] : [ "-q", "-A", "--no-lock", "--no-config", ],
             // NOTE: no lock is given because differnt versions of deno can have different lock file formats
             //       meaning the script will fail to run with the spcified version of deno
             //       if another version of deno is installed

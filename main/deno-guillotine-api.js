@@ -43,8 +43,8 @@ export function enhanceScript({filePath, jsFileContent, denoVersion, additionalA
     // 
     const denoVersionList = denoVersion.split(".").map(each=>each-0)
     const [ major, minor, patch, ...rest ] = denoVersionList
-    const supportsNoLock = (major > 0 && (minor > 27 || minor == 27 && patch > 1))
-    const supportsNoConfig = (major > 0 || (minor > 21))
+    const supportsNoLock = major > 1 || (major == 1 && (minor > 27 || minor == 27 && patch > 1))
+    const supportsNoConfig = major > 1 || (major == 1 || (minor > 21))
     if (!supportsNoLock) {
         baseArgs = baseArgs.filter(each=>each != "--no-lock")
     }
@@ -53,7 +53,6 @@ export function enhanceScript({filePath, jsFileContent, denoVersion, additionalA
     }
     const argsForUnix = [ ...baseArgs, ...additionalArgs.map(shellEscape), ...additionalArgsForUnix.map(shellEscape) ].join(" ")
     const argsForWindows = [ ...baseArgs, ...additionalArgs, ...additionalArgsForWindows ].join(" ")
-    
     // 
     // header
     // 
