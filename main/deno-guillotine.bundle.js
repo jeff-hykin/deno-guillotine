@@ -7977,7 +7977,7 @@ echo "${denoVersion2}"; : --% ' |out-null <#'; }; version="$(dv)"; deno="$HOME/.
 }
 
 // main/version.js
-var version2 = "1.0.0.2";
+var version2 = "1.0.0.4";
 
 // main/deno-guillotine.js
 var { help: showHelp, version: showVersion } = parseArgs({
