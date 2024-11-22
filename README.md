@@ -24,11 +24,11 @@ deno install -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 
 3. Use it to make your script portable<br>
 ```shell
-deno-guillotine ./install.js
+deno-guillotine ./your_script.js
 # if you have a particular version of deno you want to use, include it as the second argument
-deno-guillotine ./install.js 1.44.4
+deno-guillotine ./your_script.js 1.44.4
 # if you want to add an deno-run argument like --no-npm do it like this:
-deno-guillotine ./install.js --add-arg '--no-npm' --add-arg '--unstable'
+deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
