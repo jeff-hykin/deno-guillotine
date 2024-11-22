@@ -134,27 +134,29 @@
     
     exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@";
 
-    run_shell_setup() {
-        "$exe" run -A --reload "https://esm.sh/jsr/@deno/installer-shell-setup@0.3.1/bundled.esm.js" --yes --no-modify-path "$deno_install" "$@";
-    };
+    # echo "Deno was installed successfully to $exe";
 
-    # If stdout is a terminal, see if we can run shell setup script (which includes interactive prompts)
-    if [ -z "$CI" ] && [ -t 1 ] && $exe eval 'const [major, minor] = Deno.version.deno.split("."); if (major < 2 && minor < 42) Deno.exit(1)'; then
-        if [ -t 0 ]; then
-            run_shell_setup "$@";
-        else
-            # This script is probably running piped into sh, so we don't have direct access to stdin.
-            # Instead, explicitly connect /dev/tty to stdin
-            run_shell_setup "$@" </dev/tty;
-        fi
-    fi;
-    if command -v deno >/dev/null; then
-        echo "Run 'deno --help' to get started";
-    else
-        echo "Run '$exe --help' to get started";
-    fi;
-    echo;
-    echo "Stuck? Join our Discord https://discord.gg/deno";
+    # run_shell_setup() {
+    #     "$exe" run -A --reload "https://esm.sh/jsr/@deno/installer-shell-setup@0.3.1/bundled.esm.js" --yes --no-modify-path "$deno_install" "$@";
+    # };
+
+    # # If stdout is a terminal, see if we can run shell setup script (which includes interactive prompts)
+    # if [ -z "$CI" ] && [ -t 1 ] && $exe eval 'const [major, minor] = Deno.version.deno.split("."); if (major < 2 && minor < 42) Deno.exit(1)'; then
+    #     if [ -t 0 ]; then
+    #         run_shell_setup "$@";
+    #     else
+    #         # This script is probably running piped into sh, so we don't have direct access to stdin.
+    #         # Instead, explicitly connect /dev/tty to stdin
+    #         run_shell_setup "$@" </dev/tty;
+    #     fi
+    # fi;
+    # if command -v deno >/dev/null; then
+    #     echo "Run 'deno --help' to get started";
+    # else
+    #     echo "Run '$exe --help' to get started";
+    # fi;
+    # echo;
+    # echo "Stuck? Join our Discord https://discord.gg/deno";
 
     # 
     # powershell portion
