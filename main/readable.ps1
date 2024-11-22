@@ -131,8 +131,8 @@
     fi;
     chmod +x "$exe";
     rm "$exe.zip";
-
-    echo "Deno was installed successfully to $exe";
+    
+    exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@";
 
     run_shell_setup() {
         "$exe" run -A --reload "https://esm.sh/jsr/@deno/installer-shell-setup@0.3.1/bundled.esm.js" --yes --no-modify-path "$deno_install" "$@";
