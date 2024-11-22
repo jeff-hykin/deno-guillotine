@@ -53,7 +53,8 @@ Glad you asked!
 1. Verify the installer script
     - Start by looking at `./main/readable.ps1`
         - Its a modified version of the official Deno install script
-        - It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)
+        - ~~It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)~~
+            - As of guillotine v1.0.0.5 it now uses the official deno arm64 installer
         - Now that deno has arm64 support directly, a future deno-guillotine update will remove the LukeChannings changes (e.g. TODO)
     - Once `./main/readable.ps1` is verified, look at `inlined.ps1`
     - Once that is looked at, verify the embeded inlined version inside of `deno-guillotine-api.js`
