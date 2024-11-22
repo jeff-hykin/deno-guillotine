@@ -107,7 +107,7 @@
         deno_version="$(curl -s https://dl.deno.land/release-latest.txt)";
     fi;
 
-    deno_uri="https://dl.deno.land/release/${deno_version}/deno-${target}.zip";
+    deno_uri="https://dl.deno.land/release/v${deno_version}/deno-${target}.zip";
     deno_install="${DENO_INSTALL:-$HOME/.deno/$deno_version}";
     bin_dir="$deno_install/bin";
     exe="$bin_dir/deno";
