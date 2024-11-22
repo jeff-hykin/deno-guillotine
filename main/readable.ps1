@@ -19,7 +19,7 @@
     has () {
         command -v "$1" >/dev/null;
     }; 
-    set -e
+    set -e;
     
     # try to install unzip for the user if its missing
     if ! has unzip && ! has 7z; then
