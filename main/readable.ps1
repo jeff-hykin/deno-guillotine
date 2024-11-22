@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 "\"",`$(echo --% ' |out-null)" >$null;function :{};function dv{<#${/*'>/dev/null )` 2>/dev/null;dv() { #>
-        echo "1.24.0"; : --% ' |out-null <#';
+        echo "DENO_VERSION_HERE"; : --% ' |out-null <#';
     };
     deno_version="$(dv)";
     deno="$HOME/.deno/$deno_version/bin/deno";
@@ -8,10 +8,10 @@
     # try to run immediately
     # 
     if [ -x "$deno" ];then 
-        exec "$deno" run -q -A "$0" "$@"; 
+        exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@"; 
     # if not executable, try to make it executable then run ASAP
     elif [ -f "$deno" ]; then 
-        chmod +x "$deno" && exec "$deno" run -q -A "$0" "$@"; 
+        chmod +x "$deno" && exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@"; 
     fi;
     # 
     # if the user doesn't have it, install deno
@@ -56,7 +56,7 @@
     if ! has unzip && ! has 7z; then
         echo "Error: either unzip or 7z is required to install Deno (see: https://github.com/denoland/deno_install#either-unzip-or-7z-is-required )." 1>&2;
         exit 1;
-    fi
+    fi;
 
     if [ "$OS" = "Windows_NT" ]; then
         target="x86_64-pc-windows-msvc";
@@ -67,7 +67,7 @@
         "Linux aarch64") target="aarch64-unknown-linux-gnu" ;;
         *) target="x86_64-unknown-linux-gnu" ;;
         esac
-    fi
+    fi;
 
     print_help_and_exit() {
         echo "Setup script for installing deno
@@ -102,10 +102,10 @@
             fi
             ;;
         esac
-    done
+    done;
     if [ -z "$deno_version" ]; then
         deno_version="$(curl -s https://dl.deno.land/release-latest.txt)";
-    fi
+    fi;
 
     deno_uri="https://dl.deno.land/release/${deno_version}/deno-${target}.zip";
     deno_install="${DENO_INSTALL:-$HOME/.deno/$deno_version}";
@@ -114,7 +114,7 @@
 
     if [ ! -d "$bin_dir" ]; then
         mkdir -p "$bin_dir";
-    fi
+    fi;
     
     if has curl; then
         curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri";
@@ -122,13 +122,13 @@
         wget --output-document="$exe.zip" "$deno_uri";
     else
         echo "Error: curl or wget is required to download Deno (see: https://github.com/denoland/deno_install )." 1>&2;
-    fi
+    fi;
     
     if has unzip; then
         unzip -d "$bin_dir" -o "$exe.zip";
     else
         7z x -o"$bin_dir" -y "$exe.zip";
-    fi
+    fi;
     chmod +x "$exe";
     rm "$exe.zip";
 
@@ -147,12 +147,12 @@
             # Instead, explicitly connect /dev/tty to stdin
             run_shell_setup "$@" </dev/tty;
         fi
-    fi
+    fi;
     if command -v deno >/dev/null; then
         echo "Run 'deno --help' to get started";
     else
         echo "Run '$exe --help' to get started";
-    fi
+    fi;
     echo;
     echo "Stuck? Join our Discord https://discord.gg/deno";
 
@@ -203,7 +203,7 @@
             [Environment]::SetEnvironmentVariable('Path', "$Path;$BinDir", $User);
             $Env:Path += ";$BinDir";
         }
-    }; & "$DenoExe" run -q -A "$PSCommandPath" @args; Exit $LastExitCode; <#
+    }; & "$DenoExe" run DENO_WINDOWS_ARGS_HERE "$PSCommandPath" @args; Exit $LastExitCode; <#
 # */0}`;
 console.log("Hello World")
 // #>
