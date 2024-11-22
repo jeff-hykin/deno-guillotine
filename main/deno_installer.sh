@@ -1,4 +1,5 @@
 #!/bin/sh
+# FROM: curl -fsSL https://deno.land/install.sh
 # Copyright 2019 the Deno authors. All rights reserved. MIT license.
 # TODO(everyone): Keep this script simple and easily auditable.
 
