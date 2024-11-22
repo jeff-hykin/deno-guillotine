@@ -16,11 +16,9 @@
     # 
     # if the user doesn't have it, install deno
     # 
-    bin_dir="$HOME/.deno/$version/bin";
-    exe="$bin_dir/deno";
     has () {
         command -v "$1" >/dev/null;
-    } ; 
+    }; 
     set -e
 
     if ! command -v unzip >/dev/null && ! command -v 7z >/dev/null; then
@@ -85,9 +83,16 @@
     if [ ! -d "$bin_dir" ]; then
         mkdir -p "$bin_dir"
     fi
-
-    curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri"
-    if command -v unzip >/dev/null; then
+    
+    if has curl; then
+        curl --fail --location --progress-bar --output "$exe.zip" "$deno_uri"
+    elif has wget; then
+        wget --output-document="$exe.zip" "$deno_uri"
+    else
+        echo "Error: curl or wget is required to download Deno (see: https://github.com/denoland/deno_install )." 1>&2
+    fi
+    
+    if has unzip; then
         unzip -d "$bin_dir" -o "$exe.zip"
     else
         7z x -o"$bin_dir" -y "$exe.zip"
