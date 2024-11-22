@@ -11,7 +11,7 @@
         exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@"; 
     # if not executable, try to make it executable then run ASAP
     elif [ -f "$deno" ]; then 
-        chmod +x "$deno" && exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@"; 
+        chmod +x "$deno" && exec "$deno" run UNIX_DENO_ARGS_HERE "$0" "$@";
     fi;
     # 
     # if the user doesn't have it, install deno
