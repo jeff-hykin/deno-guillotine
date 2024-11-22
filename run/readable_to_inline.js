@@ -60,7 +60,7 @@ string = string.replace(/UNIX_DENO_ARGS_HERE/g, "${argsForUnix}")
 string = string.replace(/DENO_WINDOWS_ARGS_HERE/g, "${argsForWindows}")
 string = string.replace('#> echo "${denoVersion}"', '#>\necho "${denoVersion}"')
 await FileSystem.write({
-    data: string,
+    data: "export default ({denoVersion, argsForUnix, argsForWindows}) => "+string,
     path: "./main/inlined.js",
 })
 console.log("done: ./main/inlined.js")
