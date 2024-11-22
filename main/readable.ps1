@@ -2,8 +2,8 @@
 "\"",`$(echo --% ' |out-null)" >$null;function :{};function dv{<#${/*'>/dev/null )` 2>/dev/null;dv() { #>
         echo "1.24.0"; : --% ' |out-null <#';
     };
-    version="$(dv)";
-    deno="$HOME/.deno/$version/bin/deno";
+    deno_version="$(dv)";
+    deno="$HOME/.deno/$deno_version/bin/deno";
     # 
     # try to run immediately
     # 
@@ -78,8 +78,8 @@
     fi
 
     deno_uri="https://dl.deno.land/release/${deno_version}/deno-${target}.zip"
-    deno_install="${DENO_INSTALL:-$HOME/.deno}"
-    bin_dir="$deno_install/bin"
+    deno_install="${DENO_INSTALL:-$HOME/.deno/$deno_version}"
+    bin_dir="$deno_install/bin";
     exe="$bin_dir/deno"
 
     if [ ! -d "$bin_dir" ]; then
