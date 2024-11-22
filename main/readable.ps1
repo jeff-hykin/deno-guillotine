@@ -20,8 +20,40 @@
         command -v "$1" >/dev/null;
     }; 
     set -e
-
-    if ! command -v unzip >/dev/null && ! command -v 7z >/dev/null; then
+    
+    # try to install unzip for the user if its missing
+    if ! has unzip && ! has 7z; then
+        echo "Can I try to install unzip for you? (its required for this command to work) ";read ANSWER;echo; 
+        if [ "$ANSWER" =~ ^[Yy] ]; then 
+            if ! has brew; then 
+                brew install unzip;
+            elif has apt-get; then
+                if [ "$(whoami)" = "root" ]; then 
+                    apt-get install unzip -y;
+                elif has sudo; then 
+                    echo "I'm going to try sudo apt install unzip";read ANSWER;echo; 
+                    sudo apt-get install unzip -y; 
+                elif has doas; then 
+                    echo "I'm going to try doas apt install unzip";read ANSWER;echo; 
+                    doas apt-get install unzip -y; 
+                else apt-get install unzip -y; 
+                fi; 
+            fi; 
+        fi; 
+        
+        # if still doesn't have unzip somehow
+        if ! has unzip; then 
+            echo "";
+            echo "So I couldn't find an 'unzip' command";
+            echo "And I tried to auto install it, but it seems that failed";
+            echo "(This script needs unzip and either curl or wget)";
+            echo "Please install the unzip command manually then re-run this script";
+            exit 1; 
+        fi; 
+    fi;
+    
+    
+    if ! has unzip && ! has 7z; then
         echo "Error: either unzip or 7z is required to install Deno (see: https://github.com/denoland/deno_install#either-unzip-or-7z-is-required )." 1>&2
         exit 1
     fi
