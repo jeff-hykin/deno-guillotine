@@ -22,21 +22,25 @@ console.log("done: ./main/inlined.ps1")
 
 const stringToBacktickRepresentation = (string) => {
     let newString = "`"
+    let nextIndex = 0
     for (const each of string) {
+        nextIndex++
         if (each == "\\") {
             newString += "\\\\"
         } else if (each == "`") {
             newString += "\\`"
         } else if (each == "$") {
-            newString += "\\$"
+            if (string[nextIndex] == "{") {
+                newString += "\\$"
+            } else {
+                newString += "$"
+            }
         } else if (each == "\r") { // special because it screws up CRLF vs LF and makes the file look like a binary file
             newString += "\\r"
         // sequences that dont need to be escaped
         } else if (each == "\b"||each == "\t"||each == "\n"||each == "\v"||each=="\f") { // note: \r is the only one missing, which is intentional because it causes problems: https://262.ecma-international.org/13.0/#sec-ecmascript-data-types-and-values
             newString += each
         } else if (each.codePointAt(0) < 0x7F) {
-            newString += each
-        } else if (isValidIdentifier(`_${each}`)) {
             newString += each
         } else {
             const stringified = JSON.stringify(each)
@@ -48,11 +52,15 @@ const stringToBacktickRepresentation = (string) => {
         }
     }
     return newString +"`"
-    // '`'+string.slice(0,10).replace("\\","\\\\").replace("`","\\`").replace("${","\\${")+'`'
 }
 
+let string = stringToBacktickRepresentation(firstLine+"\n"+content+"\n"+lastRealLine+"\n")
+string = string.replace(/DENO_VERSION_HERE/g,"${denoVersion}")
+string = string.replace(/UNIX_DENO_ARGS_HERE/g, "${argsForUnix}")
+string = string.replace(/DENO_WINDOWS_ARGS_HERE/g, "${argsForWindows}")
+string = string.replace('#> echo "${denoVersion}"', '#>\necho "${denoVersion}"')
 await FileSystem.write({
-    data: stringToBacktickRepresentation(firstLine+"\n"+content+"\n"+lastRealLine),
+    data: string,
     path: "./main/inlined.js",
 })
 console.log("done: ./main/inlined.js")
