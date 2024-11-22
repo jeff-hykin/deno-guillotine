@@ -53,9 +53,6 @@ Glad you asked!
 1. Verify the installer script
     - Start by looking at `./main/readable.ps1`
         - Its a modified version of the official Deno install script
-        - ~~It has arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) (which was needed before deno had added arm64 support)~~
-            - As of guillotine v1.0.0.5 it now uses the official deno arm64 installer
-        - Now that deno has arm64 support directly, a future deno-guillotine update will remove the LukeChannings changes (e.g. TODO)
     - Once `./main/readable.ps1` is verified, look at `inlined.ps1`
     - Once that is looked at, verify the embeded inlined version inside of `deno-guillotine-api.js`
     - Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
@@ -66,6 +63,10 @@ Glad you asked!
     - GoodJs is a permissionless/frontend utility library I maintain
     - FileSystem is a quality of life wrapper around Deno's file system and path. I'd like to remove it from guillotine to make guillotine easier to verify, but thats future work for me.
 
+- Footnote: 
+    - Deno didn't always have official arm64 support
+    - Older versions of guillotine got arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) 
+    - Now guillotine (as of v1.0.0.5) uses the official deno arm64 installer 
 
 # Can I generate these files client-side?
 
