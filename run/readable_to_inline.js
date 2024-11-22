@@ -1,6 +1,6 @@
 #!/usr/bin/env -S deno run --allow-all
 import { FileSystem } from "https://deno.land/x/quickr@0.6.56/main/file_system.js"
-let content = await FileSystem.read("./main/readable.ps1")
+let content = await FileSystem.read("./main/2_readable.ps1")
 // remove last two lines
 const firstLine = content.split(/\n/g)[0]
 const lastRealLine = content.split(/\n/g).slice(-3)[0]
@@ -16,9 +16,9 @@ if (content.match(/\\\n/)) {
 
 await FileSystem.write({
     data: firstLine+"\n"+content+"\n"+lastRealLine,
-    path: "./main/inlined.ps1",
+    path: "./main/3_inlined.ps1",
 })
-console.log("done: ./main/inlined.ps1")
+console.log("done: ./main/3_inlined.ps1")
 
 const stringToBacktickRepresentation = (string) => {
     let newString = "`"
@@ -61,6 +61,6 @@ string = string.replace(/DENO_WINDOWS_ARGS_HERE/g, "${argsForWindows}")
 string = string.replace('#> echo "${denoVersion}"', '#>\necho "${denoVersion}"')
 await FileSystem.write({
     data: "export default ({denoVersion, argsForUnix, argsForWindows}) => "+string,
-    path: "./main/inlined.js",
+    path: "./main/4_inlined.js",
 })
-console.log("done: ./main/inlined.js")
+console.log("done: ./main/4_inlined.js")

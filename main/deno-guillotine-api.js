@@ -1,9 +1,11 @@
 import * as Path from "https://deno.land/std@0.128.0/path/mod.ts"
 import { pathPieces } from "https://deno.land/x/good@1.7.1.1/flattened/path_pieces.js"
-import generateHeader from "./inlined.js"
+import generateHeader from "./4_inlined.js"
 
 const specialCharPattern = /\s|\\|\"|'|`|#|\$|%|&|;|\*|\(|\)|\[|\]|\{|\}|,|<|>|\?|@|\^|\||~/
 const shellEscape = (arg)=>`'${arg.replace(/'/g,`'"'"'`)}'`
+
+export { generateHeader }
 
 export function enhanceScript({filePath, jsFileContent, denoVersion, additionalArgs, additionalArgsForUnix, additionalArgsForWindows, baseArgs=["-q", "-A", "--no-lock", "--no-config"], }) {
     // 

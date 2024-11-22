@@ -51,11 +51,28 @@ I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/
 
 Glad you asked!
 1. Verify the installer script
-    - Start by looking at `./main/readable.ps1`
-        - Its a modified version of the official Deno install script
-    - Once `./main/readable.ps1` is verified, look at `inlined.ps1`
-    - Once that is looked at, verify the embeded inlined version inside of `deno-guillotine-api.js`
-    - Note: expect slight differences between `readable.ps1`, `inlined.ps1`, and the embeded version. The conversion process has not been fully automated since it doesn't happen often.
+    - Start by looking at `./main/1_deno_installer.sh`
+        - verify it by comparing it to the official Deno install script [https://deno.land/install.sh](https://deno.land/install.sh)
+    - Then compare that to `./main/2_readable.ps1`
+        - Read the commits to see explainations of changes (it has to be changed manually)
+        - ex:
+            - the PATH modification that deno usually performs was commented out (we don't want to affect the user's system)
+            - the deno-version is automatically supplied (instead of grabbing latest)
+            - a bunch of semicolons need to be added so that the newlines can be removed (so the script can be compressed at the top of a file)
+            - the install location is changed from `$HOME/.deno/` to `$HOME/.deno/${version}/` (we don't want to affect the user's system)
+            - if curl doesn't exist, we fall back on wget (some systems don't have curl)
+            - if unzip doesn't exist, we try to install it for the user (some systems don't start with unzip)
+            - etc
+    - Once `./main/2_readable.ps1` is verified, look at `./run/readable_to_inline.js`. It
+        - this file-reads the readable version
+        - deletes comments
+        - deletes newlines
+        - generates `./main/3_inlined.ps1` which is the shell + powershell aspect
+        - JavaScript-escapes those contents
+        - makes a javascript function that accepts the deno version and the args (like `--allow-all` or `--unstable`)
+        - puts that javascript function inside of `./main/4_inlined.js` 
+    - Once those have been looked open up `deno-guillotine-api.js` (which imports `./main/4_inlined.js`)
+    - Finally `deno-guillotine.js` imports `enhanceScript` from `deno-guillotine-api.js`
 2. Verify the main JavaScript
     - Look at `deno-guillotine-api.js` (no permissions needed)
     - Look at `deno-guillotine.js` (needs file permissions because its the CLI script)
