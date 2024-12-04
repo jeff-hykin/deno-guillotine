@@ -17,12 +17,12 @@ This is possible because of some rare builtin tools that allow for a single file
 console.log("Hello World")
 ```
 
-2. Install the cli helper (guillotine) to make your script portable<br>
+2. Install this tool (guillotine) so it can modify your scripts to make them portable<br>
 ```shell
 deno install -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 ```
 
-3. Use it to make your script portable<br>
+3. Use it:<br>
 ```shell
 deno-guillotine ./your_script.js
 # if you have a particular version of deno you want to use, include it as the second argument
@@ -32,17 +32,18 @@ deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
-- Two files will have been generated, which I'll explain in a moment. More importantly though, typing `./install` in the command line will now try an execute the script (even on Windows)
+- `./install` (if thats the name of your script) will now run your script, even on Windows!
+- There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
 
-- Two files are generated, but one is just a symlink to the other. And we can get away with a single file (with some compromises):
+- Two files are generated, but one is just a symlink, the other is the "real" file. We can get away with a single file (with some compromises):
   - Technically `install.ps1` is the only file needed. Typing `./install.ps1` on any OS will execute correctly.<br>However, I find the `.ps1` ugly. And the `.ps1` is only needed for Windows. The other file (the symlink) is what makes it possible to do `./install` on all systems:
-    - On Windows, if the file is called `./install.ps1` then typing `./install` in the command line naturally execute it (no change needed).
-    - On Linux/Mac we can make a `./install` file that is just a relative symlink to `install.ps1`. Volia, typing `./install` now executes the `./install.ps1` file.
-  - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then just rename the `.ps1` file so that it doesn't have a `.ps1`.
+    - On Windows, if the file is called `./install.ps1` then typing `./install` will run it
+    - On Linux/Mac `./install`  runs the symlink, which effectively just runs `install.ps1`.
+  - If you don't care about Windows supoort, delete the non-ps1 file (the symlink), and then remove the `.ps1` from the remaining file.
   
-# How can something be valid Powershell, Bash, and Deno all at the same time?
+# How can something be valid Powershell, Bash, and Deno all at the same time? (Polyglot program)
 
 I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
 
