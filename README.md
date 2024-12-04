@@ -32,7 +32,7 @@ deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
-- `./your_script` (if thats the name of your script) will now run your script, even on Windows!
+- typing `./your_script` (if thats the name of your script) will now run your script, even on Windows! even if you uninstalled Deno!
 - There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
