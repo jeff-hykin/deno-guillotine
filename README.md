@@ -32,12 +32,12 @@ deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
-- typing `./your_script` (if thats the name of your script) will now run your script, even on Windows! even if you uninstalled Deno!
+- typing `./your_script` (if thats the name of your script) will now run your script, even if you uninstalled Deno! even if you move it from Linux to Msc, or Mac to Windows!
 - There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
 
-- Two files are generated, but one is just a symlink, the other is the "real" file. We can get away with a single file (with some compromises):
+- Two files are generated, but one is just a symlink, the other is the "real" file. We can get away with a single file with some compromises:
   - Technically `your_script.ps1` is the only file needed. Typing `./your_script.ps1` on any OS will execute correctly.<br>However, I find the `.ps1` ugly. And the `.ps1` is only needed for Windows. The other file (the symlink) is what makes it possible to do `./your_script` on all systems:
     - On Windows, if the file is called `./your_script.ps1` then typing `./your_script` will run it
     - On Linux/Mac `./your_script`  runs the symlink, which effectively just runs `your_script.ps1`.
@@ -45,7 +45,7 @@ deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
   
 # How can something be valid Powershell, Bash, and Deno all at the same time? (Polyglot program)
 
-I wrote out an explaination [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
+I wrote out an explanation [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
 
 
 # How do I verify this isn't malicious?
