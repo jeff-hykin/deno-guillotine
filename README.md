@@ -27,12 +27,12 @@ deno install -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 deno-guillotine ./your_script.js
 # if you have a particular version of deno you want to use, include it as the second argument
 deno-guillotine ./your_script.js 1.44.4
-# if you want to add an deno-run argument like --no-npm do it like this:
+# if you want to add a deno-run argument like --no-npm do it like this:
 deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
-- typing `./your_script` (if thats the name of your script) will now run your script, even if you uninstalled Deno! even if you move it from Linux to Msc, or Mac to Windows!
+- typing `./your_script` (if thats the name of your script) will now run your script, even if you uninstalled Deno! even if you move it from Linux to Mac, or Mac to Windows!
 - There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
