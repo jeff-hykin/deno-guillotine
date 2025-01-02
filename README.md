@@ -50,13 +50,15 @@ I wrote out an explanation [here](https://stackoverflow.com/questions/39421131/i
 # What does guillotine do to the file? (TLDR)
 
 If you've run the example (`./your_script.js`), you can manually do what guillotine does to another file.
-1. Copy the first three lines at the top of `./your_script.js`, and put it at the top of `./your_other_script.js`
-2. Copy the last line (a JS comment) from `./your_script.js` and add it as the last line to `./your_other_script.js`
-3. Duplicate `./your_other_script.js` give it a `.ps1` extension, make it executable, and volia.
+1. Copy the first three lines at the top of `./your_script.ps1`, and put it at the top of `./your_other_script.js`
+2. Copy the last line (a JS comment) from `./your_script.ps1` and add it as the last line to `./your_other_script.js`
+3. Duplicate `./your_other_script.js` give it a `.ps1` extension, give it executable permission, and volia.
 
-Thats it! Or at least for 99.9% of programs `./your_other_script.ps1` will now run everywhere. The real heavy lifting is those first three lines (the compressed deno installer). You can modify the deno version that's in those first three lines, and modify the deno run arguments. However, if you change the deno run arguments (ex: --no-lock) then make sure to change the arguments everywhere, as there is some (necessary) duplication.
+Thats it! Or at least for 99.9% of programs `./your_other_script.ps1` will now run everywhere. The real heavy lifting is those first three lines (the compressed deno installer). You can modify the deno version that's in those first three lines, and modify the deno run arguments. If you change the deno run arguments (ex: --no-lock) then make sure to change the arguments everywhere, as there is some (necessary) duplication.
 
-What about the other 0.1% of programs? Well if your code contains `#>` (even inside a JS comment) then guillotine will escape it. So if you're doing things manually, then you'll have to escape it yourself to make the script work on Windows.
+I got really tired of doing that by hand so I made guillotine to automate the process.
+
+What about the other 0.1% of programs? Well if your code contains `#>` (even inside a JS comment) then guillotine will escape it. If you're doing things manually, then you'll have to escape it yourself to make the script work on Windows.
 
 # How do I verify this isn't malicious?
 
