@@ -5,7 +5,7 @@ Making cross platform scripts that have 0 install steps / instructions
 - The script does not need to "target" an OS; it is a single script, the same file for all OS's
 - The script is not a binary and is not compiled/mangled; it is readable/editable JavaScript
 - The script will not touch anything installed by the user (no pollution/side-effects)
-- The script will auto-download a specific version of Deno to an isolated folder, and then run itself using that exact version of Deno to ensure consistent/reproducable behavior.
+- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself using that exact version of Deno to ensure consistent/reproducable behavior.
 - Any Deno.land module can be imported/used, no need to reinvent the wheel or bundle code.
 
 This is possible because of some rare builtin tools that allow for a single file to be valid bash, and valid powershell, AND valid JavaScript (based on this StackOverflow answer [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
