@@ -3,7 +3,7 @@
 Making cross platform scripts that have 0 install steps / instructions
 - The user does not need to install Curl/Node/Deno, nor anything else
 - The script does not need to "target" an OS; it is a single script, the same file for all OS's
-- The output is not a binary and is not mangled; it is readable/editable JavaScript
+- The generated script is not a binary and is not mangled; it is readable/editable JavaScript
 - The script will not touch anything installed by the user (no pollution/side-effects)
 - The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself using that exact version of Deno to ensure consistent/reproducable behavior.
 - Any Deno.land module can be imported/used, no need to reinvent the wheel or bundle code.
