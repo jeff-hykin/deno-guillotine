@@ -47,39 +47,49 @@ deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 
 I wrote out an explanation [here](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell/67292076#67292076) that covers the basics, and it was fairly straightforward to add support for JavaScript on top of Bash/Powershell. In particular, I just took the offical Deno install script and compressed it to fit inline at the top of a file.
 
+# What does guillotine do to the file? (TLDR)
+
+If you've run the example (`./your_script.js`), you can manually do what guillotine does to another file.
+1. Copy the first three lines at the top of `./your_script.js`, and put it at the top of `./your_other_script.js`
+2. Copy the last line (a JS comment) from `./your_script.js` and add it as the last line to `./your_other_script.js`
+3. Duplicate `./your_other_script.js` give it a `.ps1` extension, make it executable, and volia.
+
+Thats it! Or at least for 99.9% of programs `./your_other_script.ps1` will now run everywhere. The real heavy lifting is those first three lines (the compressed deno installer). You can modify the deno version that's in those first three lines, and modify the deno run arguments. However, if you change the deno run arguments (ex: --no-lock) then make sure to change the arguments everywhere, as there is some (necessary) duplication.
+
+What about the other 0.1% of programs? Well if your code contains `#>` (even inside a JS comment) then guillotine will escape it. So if you're doing things manually, then you'll have to escape it yourself to make the script work on Windows.
 
 # How do I verify this isn't malicious?
 
-Glad you asked!
-1. Verify the installer script
-    - Start by looking at `./main/1_deno_installer.sh`
+Glad you asked! The largest step is verifying that those first three lines (the deno installer). Here's a guide:
+1. Installer verification
+    - There's four stages. Stage 1 is "literally the installer straight from deno official" and it gradually becomes stage 4 "a js function that generates a compressed modified installer"
+    - stage one is under `./main/1_deno_installer.sh`
         - verify it by comparing it to the official Deno install script [https://deno.land/install.sh](https://deno.land/install.sh)
     - Then compare that to `./main/2_readable.ps1`
-        - Read the commits to see explainations of changes (it has to be changed manually)
+        - Read the commits to see explanations of changes (it has to be changed manually)
         - ex:
             - the PATH modification that deno usually performs was commented out (we don't want to affect the user's system)
-            - the deno-version is automatically supplied (instead of grabbing latest)
-            - a bunch of semicolons need to be added so that the newlines can be removed (so the script can be compressed at the top of a file)
+            - the deno-version is supplied (instead of grabbing latest)
+            - a bunch of semicolons need to be added so that the newlines can be removed in the next stage
             - the install location is changed from `$HOME/.deno/` to `$HOME/.deno/${version}/` (we don't want to affect the user's system)
             - if curl doesn't exist, we fall back on wget (some systems don't have curl)
             - if unzip doesn't exist, we try to install it for the user (some systems don't start with unzip)
-            - etc
     - Once `./main/2_readable.ps1` is verified, look at `./run/readable_to_inline.js`. It
-        - this file-reads the readable version
+        - reads stage 2
         - deletes comments
         - deletes newlines
         - generates `./main/3_inlined.ps1` which is the shell + powershell aspect
-        - JavaScript-escapes those contents
-        - makes a javascript function that accepts the deno version and the args (like `--allow-all` or `--unstable`)
-        - puts that javascript function inside of `./main/4_inlined.js` 
-    - Once those have been looked open up `deno-guillotine-api.js` (which imports `./main/4_inlined.js`)
+        - puts all that into a JavaScript string
+        - makes a JavaScript function that accepts the deno version and the args (like `--allow-all` or `--unstable`)
+        - puts that JavaScript code inside of `./main/4_inlined.js` 
+    - Once those have been verified, open up `deno-guillotine-api.js` (which imports `./main/4_inlined.js`)
     - Finally `deno-guillotine.js` imports `enhanceScript` from `deno-guillotine-api.js`
-2. Verify the main JavaScript
-    - Look at `deno-guillotine-api.js` (no permissions needed)
+3. Verify the main JavaScript
+    - Look at `deno-guillotine-api.js` (no permissions needed by that code)
     - Look at `deno-guillotine.js` (needs file permissions because its the CLI script)
-3. Bundle `deno-guillotine.js`, and inspect the dependencies
+4. Bundle `deno-guillotine.js`, and inspect the dependencies
     - GoodJs is a permissionless/frontend utility library I maintain
-    - FileSystem is a quality of life wrapper around Deno's file system and path. I'd like to remove it from guillotine to make guillotine easier to verify, but thats future work for me.
+    - FileSystem is a quality of life wrapper around Deno's file system and path. I'd like to remove it from guillotine to make guillotine easier to verify, but that's future work for me.
 
 - Footnote: 
     - Deno didn't always have official arm64 support
