@@ -1,14 +1,14 @@
 # What is this for?
 
-Making cross platform scripts that have 0 install steps / instructions
-- The user does not need to install Curl/Node/Deno, nor anything else
+It sounds impossible, but this tool allows us to make a script run cross-platform (on fresh MacOS/Windows/Linux install) with no "first install node" or "first install curl" prerequisite steps.
 - The script does not need to "target" an OS; it is a single script, the same file for all OS's
 - The generated script is not a binary and is not mangled; it is readable/editable JavaScript
-- The script will not touch anything installed by the user (no pollution/side-effects)
-- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself using that exact version of Deno to ensure consistent/reproducable behavior.
-- Any Deno.land module can be imported/used, no need to reinvent the wheel or bundle code.
+- The user does not need to install Node/Deno/Curl, nor anything else
+- The script will not touch the user's environment (no pollution/side-effects)
+- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself using that exact version of Deno to ensure consistent/reproducible behavior.
+- Import/use any npm module as `immport thing from "https://esm.sh/MODULE_NAME@VERSION"`, and it'll be auto downloaded and cached at runtime (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh))
 
-This is possible because of some rare builtin tools that allow for a single file to be valid bash, and valid powershell, AND valid JavaScript (based on this StackOverflow answer [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
+This is only possible because of some rare builtin tools that allow for a single file to be valid bash, and valid powershell, AND valid JavaScript (based on this StackOverflow answer [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
 # How do I make an installer script?
 
