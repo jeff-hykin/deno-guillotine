@@ -3,10 +3,11 @@
 It sounds impossible, but this tool allows us to modify a script and make it simultaneously runnable on fresh MacOS/Windows/Linux install with no "first install node" or "first install curl" prerequisite steps.
 - The script does not need to "target" an OS; it is a single script, the same file for all OS's
 - The generated script is not a binary and is not mangled; it is readable/editable JavaScript
-- The user does not need to install Node/Deno/Curl, nor anything else
 - The script will not touch the user's environment (no pollution/side-effects)
-- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself using that exact version of Deno to ensure consistent/reproducible behavior.
-- Import/use any npm module as `immport thing from "https://esm.sh/MODULE_NAME@VERSION"`, and it'll be auto downloaded and cached at runtime (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh))
+- The user does not need to install Node/Deno/Curl, nor anything else
+- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself again using that exact version of Deno to ensure consistent/reproducible behavior.
+- The script can import/use any npm module using a url as follows `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. The module will be auto downloaded and cached at runtime (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh))
+
 
 This is only possible because of some rare builtin tools that allow for a single file to be valid bash, and valid powershell, AND valid JavaScript (based on this StackOverflow answer [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
