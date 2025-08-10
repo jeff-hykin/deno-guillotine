@@ -1,6 +1,6 @@
 # What is this for?
 
-It sounds impossible, but this tool allows us to make a script run cross-platform (on fresh MacOS/Windows/Linux install) with no "first install node" or "first install curl" prerequisite steps.
+It sounds impossible, but this tool allows us to modify a script and make it runnable on fresh MacOS/Windows/Linux install with no "first install node" or "first install curl" prerequisite steps.
 - The script does not need to "target" an OS; it is a single script, the same file for all OS's
 - The generated script is not a binary and is not mangled; it is readable/editable JavaScript
 - The user does not need to install Node/Deno/Curl, nor anything else
