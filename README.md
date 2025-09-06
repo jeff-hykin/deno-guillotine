@@ -4,8 +4,8 @@ This tool is:
 1. A showcase of something that should be impossible.
 2. A surprisingly practical tool for making installers/bootstrapping scripts.
 
-This tool allows us to modify a script, and generate one single file:
-- That file runs out-of-the-box on every major OS (MacOS/Windows/Linux). No "first install curl" or "Windows users do this, Linux users do this". One file that runs every time everywhere.
+This tool allows us to modify a script, and generate one single file. 
+- That one file runs out-of-the-box for every major OS (Windows, MacOS, and Linux). No "first install curl" or "Windows users do this, Linux users do this". One file that runs every time everywhere.
 -  That file is readable and editable (not mangled)
 -  That file does not modify the user's environment (e.g. no side effects)
 -  That file is able to import/use any exisiting JavaScript package because all imports are auto installed (no package json or npm install)
