@@ -115,9 +115,9 @@ Glad you asked! The largest step is verifying that those first three lines (the 
     - Older versions of guillotine got arm64 support using LukeChannings [script](https://github.com/LukeChannings/deno-arm64) 
     - Now guillotine (as of v1.0.0.5) uses the official deno arm64 installer 
 
-# Can I generate these files client-side?
+# Can I generate these files client-side in a browser?
 
-Not sure why you would, but actually yes you can. There is a pure-function API to enable this functionality from within any JavaScript runtime.
+Not sure why you would, but actually yes you can! There is a pure-function API to enable this functionality from within any JavaScript runtime.
 
 ```js
 import { enhanceScript } from "https://deno.land/x/deno_guillotine/main/deno-guillotine-api.js"
