@@ -11,7 +11,7 @@ This tool allows us to modify a script, and generate one single file.
 -  That file, even with imports, does not modify the user's environment (e.g. no side effects)
 
 
-When executed, the file auto-downloads a specific version of Deno (you pick the version) to an isolated folder, and then runs itself using that exact version of Deno (extremely consistent/reproducible). To use npm packages, just import a url with the following format `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. Not only is the module auto downloaded, its cached (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh)) which makes re-runs of the same script very fast.
+When executed, the file auto-downloads a specific version of Deno (you pick the version) to an isolated folder, and then runs itself using that exact version of Deno. This makes for an extremely consistent/reproducible installation experience. To use npm packages, just import a url with the following format `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. Not only is the module auto downloaded, its cached (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh)) which makes re-runs of the same script very fast.
 
 ### How the hell is this possible?
 
