@@ -1,39 +1,56 @@
 # What is this for?
 
-It sounds impossible, but this tool allows us to modify a script and make it simultaneously runnable on fresh MacOS/Windows/Linux install with no "first install node" or "first install curl" prerequisite steps.
-- The script does not need to "target" an OS; it is a single script, the same file for all OS's
-- The generated script is not a binary and is not mangled; it is readable/editable JavaScript
-- The script will not touch the user's environment (no pollution/side-effects)
-- The user does not need to install Node/Deno/Curl, nor anything else
-- The script auto-downloads a specific version of Deno to an isolated folder, and then runs itself again using that exact version of Deno to ensure consistent/reproducible behavior.
-- The script can import/use any npm module using a url as follows `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. The module will be auto downloaded and cached at runtime (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh))
+This tool is 
+1. A showcase of something that should be impossible
+2. A surprisingly practical tool for making installers/bootstrapping scripts.
 
+This tool allows us to modify a script, and generate one file:
+- One file that runs out-of-the-box on every major OS (MacOS/Windows/Linux). No "first install curl" or "first install node" prerequisites
+-  One file that is readable and editable (not mangled)
+-  One file that does not modify the user's environment (e.g. side effects)
+-  One file that is able to import/use any exisiting JavaScript package because all imports are auto installed (no package json or npm install)
+
+The script auto-downloads a specific version of Deno (you pick the version) to an isolated folder, and then runs itself using that exact version of Deno (extremely consistent/reproducible).
+
+You can use basically any version of any npm module by importing a url with the following format `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. Not only is the module auto downloaded, its cached (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh)) making re-runs of the same script fast.
+
+### How the hell is that possible?
 
 This is only possible because of some rare builtin tools that allow for a single file to be valid bash, and valid powershell, AND valid JavaScript (based on this StackOverflow answer [Is it possible to write one script that runs in bash/shell and PowerShell?](https://stackoverflow.com/questions/39421131/is-it-possible-to-write-one-script-that-runs-in-bash-shell-and-powershell))
 
-# How do I make an installer script?
+# How do I make my own universal  installer script?
 
 1. Write a Deno script, lets call it `your_script.js`<br>
 ```js
 console.log("Hello World")
 ```
 
+2. Test it with deno.<br>
+```sh
+# install deno
+curl -fsSL https://deno.land/install.sh | sh
+# run your script
+deno run --allow-all ./your_script.js
+```
+
 2. Install this tool (guillotine) so it can modify your scripts to make them portable<br>
 ```shell
-deno install -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
+deno install -n universify -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 ```
 
 3. Use it:<br>
 ```shell
-deno-guillotine ./your_script.js
+# basic example
+universify ./your_script.js
+
 # if you have a particular version of deno you want to use, include it as the second argument
-deno-guillotine ./your_script.js 1.44.4
+universify ./your_script.js 1.44.4
 # if you want to add a deno-run argument like --no-npm do it like this:
-deno-guillotine ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
+universify ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
 4. Profit<br>
-- typing `./your_script` (if thats the name of your script) will now run your script, even if you uninstalled Deno! even if you move it from Linux to Mac, or Mac to Windows!
+- typing `./your_script` (if thats the name of your script) will now run your script! Even if you uninstalled Deno!
 - There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
   - On Windows there is one catch; **a fresh Windows install will block execution of all powershell scripts by default**.<br>`Set-ExecutionPolicy unrestricted` will need to be run in an admin terminal before powershell scripts can be executed. After that, it follows the same process as the other operating systems (downloads the specific version of Deno if needed, and executes itself using that version).
@@ -67,16 +84,16 @@ Glad you asked! The largest step is verifying that those first three lines (the 
 1. Installer verification
     - There's four stages. Stage 1 is "literally the installer straight from deno official" and it gradually becomes stage 4 "a js function that generates a compressed modified installer"
     - stage one is under `./main/1_deno_installer.sh`
-        - verify it by comparing it to the official Deno install script [https://deno.land/install.sh](https://deno.land/install.sh)
+        - verify it by comparing it to the official Deno install script [https://deno.land/install.sh](https://deno.land/install.sh). Note it does change over time, so my version will lag behind. 
     - Then compare that to `./main/2_readable.ps1`
         - Read the commits to see explanations of changes (it has to be changed manually)
         - ex:
-            - the PATH modification that deno usually performs was commented out (we don't want to affect the user's system)
-            - the deno-version is supplied (instead of grabbing latest)
-            - a bunch of semicolons need to be added so that the newlines can be removed in the next stage
-            - the install location is changed from `$HOME/.deno/` to `$HOME/.deno/${version}/` (we don't want to affect the user's system)
-            - if curl doesn't exist, we fall back on wget (some systems don't have curl)
-            - if unzip doesn't exist, we try to install it for the user (some systems don't start with unzip)
+            - We don't want to affect the user's system, so the PATH modification that deno usually performs is commented out 
+            - The deno-version is supplied (instead of grabbing latest)
+            - A bunch of semicolons need to be added so that the newlines can be removed in the next stage
+            - The install location is changed from `$HOME/.deno/` to `$HOME/.deno/${version}/` (again we don't want to affect the user's system deno)
+            - If curl doesn't exist, we fall back on wget (some systems don't have curl)
+            - If unzip doesn't exist, we try to talk to the user and install it for them (some Linux systems don't start with unzip)
     - Once `./main/2_readable.ps1` is verified, look at `./run/readable_to_inline.js`. It
         - reads stage 2
         - deletes comments
