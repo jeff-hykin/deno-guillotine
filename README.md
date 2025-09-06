@@ -1,6 +1,6 @@
 # What is this for?
 
-This tool is 
+This tool is:
 1. A showcase of something that should be impossible
 2. A surprisingly practical tool for making installers/bootstrapping scripts.
 
