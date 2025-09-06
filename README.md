@@ -1,7 +1,7 @@
 # What is this for?
 
 This tool is:
-1. A showcase of something that should be impossible
+1. A showcase of something that should be impossible.
 2. A surprisingly practical tool for making installers/bootstrapping scripts.
 
 This tool allows us to modify a script, and generate one file:
