@@ -7,7 +7,7 @@ This tool is:
 This tool allows us to modify a script, and generate one single file:
 - That file runs out-of-the-box on every major OS (MacOS/Windows/Linux). No "first install curl" or "Windows users do this, Linux users do this". One file that runs every time everywhere.
 -  That file is readable and editable (not mangled)
--  That file does not modify the user's environment (e.g. side effects)
+-  That file does not modify the user's environment (e.g. no side effects)
 -  That file is able to import/use any exisiting JavaScript package because all imports are auto installed (no package json or npm install)
 
 When executed the file auto-downloads a specific version of Deno (you pick the version) to an isolated folder, and then runs itself using that exact version of Deno (extremely consistent/reproducible). To use npm packages, just import a url with the following format `import thing from "https://esm.sh/MODULE_NAME@VERSION"`. Not only is the module auto downloaded, its cached (courtesy of [Deno](https://deno.com/) and [Esm.sh](https://esm.sh)) which makes re-runs of the same script very fast.
