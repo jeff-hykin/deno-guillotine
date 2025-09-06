@@ -32,12 +32,12 @@ curl -fsSL https://deno.land/install.sh | sh
 deno run --allow-all ./your_script.js
 ```
 
-2. Install this tool (guillotine) so it can modify your scripts to make them portable<br>
+3. Install this tool (guillotine) so it can modify your scripts to make them portable<br>
 ```shell
 deno install -n universify -Afg https://deno.land/x/deno_guillotine/main/deno-guillotine.js
 ```
 
-3. Use it:<br>
+4. Use it:<br>
 ```shell
 # basic example
 universify ./your_script.js
@@ -48,7 +48,7 @@ universify ./your_script.js 1.44.4
 universify ./your_script.js --add-arg '--no-npm' --add-arg '--unstable'
 ```
 
-4. Profit<br>
+5. Profit<br>
 - typing `./your_script` (if thats the name of your script) will now run your script! Even if you uninstalled Deno!
 - There are some things to discuss though:
   - On Linux/Mac and other half-decent operating systems supported by Deno (incuding Arm Linux) there is no catch.
